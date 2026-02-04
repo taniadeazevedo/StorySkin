@@ -3,69 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>STORYSKIN | Encuentra tu piel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <title>STORYSKIN | Elige tu piel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4853214655991551" crossorigin="anonymous"></script>
     <style>
-        :root { --accent: #8b5cf6; --bg: #050505; --glass: rgba(255,255,255,0.02); --border: rgba(255,255,255,0.08); }
+        :root { --accent: #8b5cf6; --bg: #050505; --glass: rgba(255,255,255,0.03); --border: rgba(255,255,255,0.1); }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         
         body { 
             background: var(--bg); 
-            background-image: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05), transparent),
-                              url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="0.5" fill="white" fill-opacity="0.1"/></svg>');
+            background-image: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05), transparent);
             color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 6rem 2rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; }
         
-        .hero { text-align: center; margin-bottom: 6rem; }
+        /* HEADER RESPONSIVO APPLE STYLE */
+        .hero { text-align: center; margin-bottom: 4rem; width: 100%; }
         .hero-title { 
-            font-size: clamp(3rem, 10vw, 7.5rem); font-weight: 900; 
-            letter-spacing: 0.18em; margin-bottom: 1.5rem; 
+            font-size: clamp(2.2rem, 12vw, 7.5rem); /* Ajuste automático para móvil */
+            font-weight: 900; 
+            letter-spacing: 0.15em; 
+            margin-bottom: 1rem; 
             background: linear-gradient(180deg, #fff 0%, #444 100%); 
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             text-transform: uppercase;
+            width: 100%;
         }
-        .hero-desc { max-width: 650px; margin: 0 auto; color: #888; font-size: 1.1rem; line-height: 1.6; }
+        .hero-desc { max-width: 600px; margin: 0 auto; color: #888; font-size: 1rem; line-height: 1.5; padding: 0 1rem; }
 
-        .genre-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 4rem; }
+        .genre-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 4rem; }
         
-        .card { position: relative; text-align: center; transition: 0.5s; }
-        .card:hover { transform: scale(1.05); }
-        .char-img { width: 100%; height: 350px; object-fit: contain; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8)); transition: 0.5s; animation: float 6s ease-in-out infinite; margin-bottom: 0.2rem; cursor: pointer; }
+        .card { position: relative; text-align: center; }
+        .char-img { 
+            width: 100%; height: auto; max-height: 350px; object-fit: contain; 
+            margin-bottom: 0.5rem; transition: 0.5s; 
+            animation: float 6s ease-in-out infinite; 
+            cursor: pointer;
+        }
 
+        /* BOCADILLO DE TEXTO */
         .bubble { 
             position: absolute; top: -10px; left: 50%; transform: translateX(-50%) scale(0.9); 
-            background: #fff; color: #000; padding: 1rem 1.4rem; border-radius: 14px; 
-            font-weight: 700; font-size: 0.85rem; width: 220px; opacity: 0; 
+            background: #fff; color: #000; padding: 0.8rem 1.2rem; border-radius: 12px; 
+            font-weight: 700; font-size: 0.8rem; width: 220px; opacity: 0; 
             transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 50; pointer-events: none;
         }
         .bubble::after { content: ''; position: absolute; bottom: -8px; left: 50%; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #fff; transform: translateX(-50%); }
+        
+        /* ACTIVACIÓN DE BURBUJA */
         .card:hover .bubble, .card.active .bubble { opacity: 1; transform: translateX(-50%) scale(1) translateY(-20px); }
 
-        .genre-name { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4em; color: rgba(255,255,255,0.4); cursor: pointer; transition: 0.3s; }
-        .card:hover .genre-name { color: var(--accent); }
+        .genre-name { 
+            font-size: 0.85rem; font-weight: 800; text-transform: uppercase; 
+            letter-spacing: 0.3em; color: rgba(255,255,255,0.4); 
+            cursor: pointer; padding: 15px; transition: 0.3s;
+            display: inline-block;
+        }
+        .genre-name:hover { color: var(--accent); transform: scale(1.1); }
 
-        /* SCANNER */
-        #scanner-view { display: none; position: fixed; inset: 0; background: #000; z-index: 2000; align-items: center; justify-content: center; flex-direction: column; }
-        .scan-line { width: 100%; height: 4px; background: var(--accent); position: absolute; top: 0; left: 0; box-shadow: 0 0 20px var(--accent); animation: scan 2s linear infinite; }
+        /* ESCÁNER ANALIZADOR */
+        #scanner-view { 
+            display: none; position: fixed; inset: 0; background: #000; 
+            z-index: 2000; align-items: center; justify-content: center; flex-direction: column; 
+        }
+        .scan-line { width: 100%; height: 3px; background: var(--accent); position: absolute; top: 0; left: 0; box-shadow: 0 0 20px var(--accent); animation: scan 2s linear infinite; }
         @keyframes scan { from { top: 0%; } to { top: 100%; } }
 
-        /* QUIZ */
-        #quiz-view { display: none; position: fixed; inset: 0; background: #000; z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(20px); }
-        .q-box { max-width: 800px; width: 90%; text-align: center; }
-        .q-text { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 4rem; letter-spacing: -0.02em; line-height: 1.1; }
-        .ans-btn { padding: 1.8rem; background: var(--glass); border: 1px solid var(--border); color: #fff; border-radius: 20px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: 0.3s; width: 100%; margin-bottom: 1.2rem; text-align: center; }
-        .ans-btn:hover { background: #fff; color: #000; transform: translateY(-5px); }
-
-        /* RESULTS */
-        .res-main { display: flex; gap: 4rem; align-items: center; background: var(--glass); padding: 5rem; border-radius: 40px; margin-bottom: 4rem; flex-wrap: wrap; text-align: left; border: 1px solid var(--border); }
-        .book-img { width: 250px; border-radius: 12px; box-shadow: 0 40px 80px rgba(0,0,0,0.8); transition: 0.8s filter ease; }
+        /* RESULTADOS ADAPTADOS */
+        #res-view { display: none; padding-top: 2rem; }
+        .res-main { display: flex; flex-direction: column; align-items: center; background: var(--glass); padding: 2rem; border-radius: 24px; text-align: center; gap: 2rem; border: 1px solid var(--border); }
+        @media (min-width: 768px) { .res-main { flex-direction: row; text-align: left; padding: 4rem; } }
+        .book-img { width: 180px; border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); transition: 0.5s filter; }
         .blur-load { filter: blur(20px); }
-        .amazon-btn { display: inline-block; background: #fff; color: #000; padding: 1.4rem 3rem; border-radius: 14px; font-weight: 800; text-decoration: none; margin-top: 2rem; letter-spacing: 0.1em; }
+        .amazon-btn { display: inline-block; background: #fff; color: #000; padding: 1.2rem 2rem; border-radius: 12px; font-weight: 800; text-decoration: none; margin-top: 1.5rem; width: 100%; text-align: center; }
 
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        #quiz-view { display: none; position: fixed; inset: 0; background: #000; z-index: 1000; align-items: center; justify-content: center; }
+        .q-box { max-width: 600px; width: 90%; text-align: center; }
+        .q-text { font-size: clamp(1.5rem, 6vw, 2.5rem); font-weight: 900; margin-bottom: 3rem; line-height: 1.2; }
+        .ans-btn { padding: 1.5rem; background: var(--glass); border: 1px solid var(--border); color: #fff; border-radius: 18px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.2s; width: 100%; margin-bottom: 1rem; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
     </style>
 </head>
 <body>
@@ -86,112 +104,72 @@
 
     <div id="scanner-view">
         <div class="scan-line"></div>
-        <h2 style="letter-spacing: 0.5em; font-weight: 900; color: var(--accent); text-align: center;">ANALIZANDO ADN LITERARIO...</h2>
+        <h2 style="letter-spacing: 0.5em; font-weight: 300; color: var(--accent); text-align: center; padding: 2rem;">ANALIZANDO TU ADN LITERARIO...</h2>
     </div>
 
-    <div id="res-view" class="container" style="display:none;">
+    <div id="res-view" class="container">
         <div id="res-data" class="res-main"></div>
-        <h3 style="margin: 6rem 0 3rem; font-weight: 900; text-align: center; letter-spacing: 0.4em; color: #444; text-transform: uppercase; font-size: 0.8rem;">Otros destinos literarios</h3>
-        <div id="res-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem;"></div>
-        <center><button onclick="location.reload()" class="ans-btn" style="margin-top: 8rem; max-width: 320px; background: transparent; border-color: #333; color: #666;">Nueva búsqueda</button></center>
+        <h3 style="margin: 4rem 0 2rem; font-weight: 900; text-align: center; letter-spacing: 0.3em; color: #444; font-size: 0.7rem; text-transform: uppercase;">Más recomendaciones para ti</h3>
+        <div id="res-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2rem;"></div>
+        <center><button onclick="location.reload()" class="ans-btn" style="margin-top: 5rem; max-width: 250px; display: block; background: transparent; border: 1px solid #333; color: #666;">OTRA PIEL</button></center>
     </div>
 
     <script>
         const data = {
             fantasy: { name: "Fantasía", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/1f494qll-removebg-preview.png", bubble: "¿Listo para mancharte de sangre en un mundo que no existe?", q: [
-                {q:"¿Gesta rápida de una tarde o compromiso de 10 tomos?", a:"Solo busco un lío de una noche", b:"Quiero casarme con la saga"},
+                {q:"¿Gesta rápida de una tarde o compromiso de 10 tomos?", a:"Busco algo rápido y sin ataduras", b:"Quiero casarme con la saga"},
                 {q:"¿Magia de purpurina o rituales oscuros?", a:"Dame polvos de hada", b:"Hechizos prohibidos y sangre"},
-                {q:"¿Dragones o monstruos raros?", a:"Lo de siempre mola", b:"Dame algo bizarro que me perturbe"},
-                {q:"¿Castillos o elfos modernos?", a:"Edad Media o nada", b:"Elfos con Instagram y wifi"},
-                {q:"¿Final feliz o tragedia?", a:"Luz y esperanza", b:"Que no quede ni el apuntador"},
-                {q:"¿Héroe o antihéroe?", a:"Nobleza obliga", b:"Un canalla con problemas de ira"},
-                {q:"¿Fácil o complejo?", a:"Sencillo y directo", b:"Necesito un manual de física mágica"},
-                {q:"¿Salvar o robar?", a:"Héroe por destino", b:"Ladrón por pura diversión"},
-                {q:"¿Política o espadas?", a:"Intriga de palacio", b:"Acero chocando contra acero"},
-                {q:"¿Lealtad o traición?", a:"Fiel hasta la muerte", b:"Puñalada trapera por la espalda"}
+                {q:"¿Dragones clásicos o monstruos raros?", a:"Lo de siempre mola", b:"Dame algo bizarro que me asuste"},
+                {q:"¿Final feliz o tragedia total?", a:"Luz y esperanza", b:"Que no quede vivo ni el apuntador"},
+                {q:"¿Salvar el mundo o robar el tesoro?", a:"Héroe por destino", b:"Ladrón por pura diversión"}
             ]},
-            thriller: { name: "Thriller", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/d7nt4mr2-removebg-preview.png", bubble: "¿Crees que eres más listo que el asesino? Inténtalo.", q: [
-                {q:"¿Asesinato elegante o carnicería?", a:"Té y deducción estilo Agatha", b:"Escenas que requieren fregona"},
+            thriller: { name: "Thriller", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/d7nt4mr2-removebg-preview.png", bubble: "¿Crees que eres más listo que el asesino?", q: [
+                {q:"¿Elegante o carnicería?", a:"Té estilo Agatha Christie", b:"Escenas que requieren fregona"},
                 {q:"¿Lento o persecución?", a:"Mente fría y pausada", b:"A 200km/h y sin frenos"},
                 {q:"¿Detective o asesino?", a:"Atrapar al malo", b:"Entrar en su mente retorcida"},
-                {q:"¿ADN o conspiración?", a:"Realismo forense", b:"Illuminati y caos global"},
-                {q:"¿Pueblo o ciudad?", a:"Secretos rurales", b:"Corrupción en la metrópolis"},
-                {q:"¿Pistas o giro loco?", a:"Quiero ir adivinando", b:"Que el final me deje mirando a la pared"},
-                {q:"¿Cerebral o gatillo?", a:"Tensión psicológica", b:"Acción de gatillo fácil"},
-                {q:"¿Real o paranormal?", a:"Lógica pura", b:"Algo huele raro aquí..."},
-                {q:"¿Genio o víctima?", a:"Un Sherlock moderno", b:"Alguien normal en un marrón gigante"},
-                {q:"¿Justicia o maldad?", a:"El bien siempre gana", b:"A veces los malos se escapan"}
+                {q:"¿Pistas o giro loco?", a:"Quiero ir adivinando", b:"Que el final me deje loco"},
+                {q:"¿Justicia o maldad?", a:"El bien siempre gana", b:"A veces los malos ganan"}
             ]},
-            erotica: { name: "Erótica", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/ehznlag1-removebg-preview.png", bubble: "¿Sabías que soy el placer culpable de la industria? Pruébame.", q: [
-                {q:"¿Tensión de 300 páginas o fuego inmediato?", a:"Un roce sutil que quema", b:"Incendio total desde la página uno"},
-                {q:"¿Enemigos o cama forzada?", a:"Del odio al amor hay un paso", b:"Ups... solo queda una cama"},
-                {q:"¿Amor o deseo puro?", a:"Corazón y sentimientos", b:"Piel con piel y sin preguntas"},
+            erotica: { name: "Erótica", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/ehznlag1-removebg-preview.png", bubble: "¿Sabías que soy el motor de la industria?", q: [
+                {q:"¿Tensión o fuego total?", a:"Un roce sutil que quema", b:"Incendio total inmediato"},
+                {q:"¿Enemigos o cama forzada?", a:"Del odio al amor", b:"Solo queda una cama..."},
+                {q:"¿Amor o deseo puro?", a:"Corazón y sentimientos", b:"Piel con piel sin preguntas"},
                 {q:"¿Dulce o peligroso?", a:"Un romance cuqui", b:"Algo oscuro y prohibido"},
-                {q:"¿Jefe o vampiro?", a:"Tensión en la oficina", b:"Mordiscos sobrenaturales"},
-                {q:"¿Risa o tabú?", a:"Comedia picante", b:"Secretos inconfesables"},
-                {q:"¿Boda o desastre?", a:"Final feliz garantizado", b:"Realismo crudo y pasional"},
-                {q:"¿Dominar o igualdad?", a:"Juegos de poder", b:"Conexión al mismo nivel"},
-                {q:"¿Rico o vecino?", a:"Un millonario excéntrico", b:"El chico de al lado"},
-                {q:"¿Tierno o salvaje?", a:"Besos lentos", b:"Brasas que lo queman todo"}
+                {q:"¿Millonario o vecino?", a:"Un millonario excéntrico", b:"El chico de al lado"}
             ]},
-            horror: { name: "Terror", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/ztyecjla-removebg-preview.png", bubble: "¿Te atreves a mirar debajo de la cama? Yo estoy ahí.", q: [
+            horror: { name: "Terror", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/ztyecjla-removebg-preview.png", bubble: "¿Te atreves a mirar debajo de la cama?", q: [
                 {q:"¿Dormir hoy o infarto?", a:"Dormir (si puedo)", b:"Cero sueño, dame pesadillas"},
                 {q:"¿Fantasmas o locos?", a:"Entidades del más allá", b:"Humanos peores que Satán"},
-                {q:"¿Casa o bosque?", a:"Claustrofobia en casa", b:"No deberías haber entrado en este bosque"},
                 {q:"¿Sangre o sustos?", a:"Gore desatado", b:"Terror psicológico puro"},
-                {q:"¿Lento o constante?", a:"Tensión que crece", b:"Un susto cada cinco minutos"},
-                {q:"¿Vivir o morir?", a:"Un héroe que sobrevive", b:"No va a quedar ni el apuntador"},
-                {q:"¿Íntimo o masivo?", a:"Miedo en una habitación", b:"Apocalipsis zombi global"},
-                {q:"¿Payasos o tecnología?", a:"Clásicos del cine", b:"Pesadillas tipo Black Mirror"},
                 {q:"¿Lucha o huida?", a:"Alguien que planta cara", b:"Víctima que corre fatal"},
-                {q:"¿Mirarás bajo la cama?", a:"No, paso", b:"Tengo que comprobarlo..."}
+                {q:"¿Mirarás?", a:"No, paso", b:"Tengo que comprobarlo"}
             ]},
             scifi: { name: "Sci-Fi", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/pngtree-d-render-of-a-female-game-character-set-in-cyberpunk-universe-png-image_16355028-removebg-preview.png", bubble: "Hackea tu destino. La realidad aburre.", q: [
                 {q:"¿Solos o aliens?", a:"Nadie nos oye gritar", b:"Contacto inminente"},
-                {q:"¿Naves o neón?", a:"Exploración espacial", b:"Cyberpunk y lluvia eterna"},
+                {q:"¿Naves o neón?", a:"Exploración espacial", b:"Cyberpunk y lluvia"},
                 {q:"¿IA amiga o Skynet?", a:"Una IA maja que ayuda", b:"Ha decidido borrarnos"},
-                {q:"¿Acción o física?", a:"Aventura palomitera", b:"Ciencia dura de Wikipedia"},
                 {q:"¿Utopía o distopía?", a:"Un futuro brillante", b:"El aire es de pago"},
-                {q:"¿Pasado o futuro?", a:"Viajes en el tiempo", b:"Dentro de 5000 años"},
-                {q:"¿Fantasía o realismo?", a:"Magia con naves", b:"Física cuántica real"},
-                {q:"¿Planetas o estación?", a:"Explorar mundos nuevos", b:"Encierro en una nave"},
-                {q:"¿Chip o bio?", a:"Más máquina que humano", b:"Naturaleza evolucionada"},
-                {q:"¿Cierre o vacío?", a:"Todo resuelto", b:"Vacío existencial profundo"}
+                {q:"¿Chip o bio?", a:"Más máquina que humano", b:"Naturaleza evolucionada"}
             ]},
             comingofage: { name: "Coming of Age", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/pa646132-removebg-preview.png", bubble: "Cuando todo dolía y todo era posible.", q: [
                 {q:"¿Instituto o Uni?", a:"Dramas en los pasillos", b:"Libertad y crisis"},
-                {q:"¿Dulce o rebelde?", a:"Primer amor tierno", b:"Caos y rebelión"},
-                {q:"¿Grupo o solo?", a:"Amigos inseparables", b:"Buscándome a mí mismo"},
                 {q:"¿Beso o drama?", a:"Un beso bajo la lluvia", b:"Lágrimas de crecimiento"},
-                {q:"¿Casa o huida?", a:"Mi sitio en casa", b:"Road trip sin retorno"},
-                {q:"¿Alma o puño?", a:"Poeta incomprendido", b:"Gamberro con corazón"},
+                {q:"¿Hogar o huida?", a:"Mi sitio en casa", b:"Road trip sin retorno"},
                 {q:"¿Identidad o encajar?", a:"Yo contra el mundo", b:"Intentando ser normal"},
-                {q:"¿Barrio o ciudad?", a:"Secretos vecinales", b:"Luces de la gran ciudad"},
-                {q:"¿Madurar o Peter Pan?", a:"Aceptar la madurez", b:"Negarme a crecer"},
-                {q:"¿Esperanza o adiós?", a:"Un futuro brillante", b:"Despedida melancólica"}
+                {q:"¿Madurar o Peter Pan?", a:"Aceptar la madurez", b:"Negarme a crecer"}
             ]},
             contemporary: { name: "Contemporáneo", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/9e7625v9-removebg-preview.png", bubble: "Tu vida no es cine, pero podría ser este libro.", q: [
                 {q:"¿Normal o épico?", a:"Un lunes cualquiera", b:"Una hazaña de vida"},
                 {q:"¿Humor o drama?", a:"Risas ácidas", b:"Dramas familiares"},
-                {q:"¿Asfalto o verde?", a:"Ritmo de gran ciudad", b:"Retiro en el campo"},
-                {q:"¿Cena o oficina?", a:"Conflictos de pareja", b:"Competencia laboral"},
-                {q:"¿Pasión o vida?", a:"Un romance inesperado", b:"La cruda rutina"},
-                {q:"¿Giro o calma?", a:"Un cambio radical", b:"La paz de lo conocido"},
+                {q:"¿Pasión o vida?", a:"Romance inesperado", b:"La cruda rutina"},
                 {q:"¿Real o cuqui?", a:"Realismo sin filtros", b:"Historias que reconfortan"},
-                {q:"¿Social o personal?", a:"Temas del mundo", b:"Mi propia mente"},
-                {q:"¿Fama o paz?", a:"Éxito y luces", b:"Paz invisible"},
-                {q:"¿Abierto o cerrado?", a:"Final como la vida misma", b:"Todo atado y bien atado"}
+                {q:"¿Fama o paz?", a:"Éxito y luces", b:"Paz invisible"}
             ]},
             historical: { name: "Histórica", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/lkl3ol1e-removebg-preview.png", bubble: "El ayer es un país extraño. Visitémoslo.", q: [
                 {q:"¿Té o barro?", a:"Salones victorianos", b:"Trincheras de guerra"},
-                {q:"¿Dato o espada?", a:"Dato histórico real", b:"Acción de época"},
-                {q:"¿Trono o cama?", a:"Poder político", b:"Amores prohibidos"},
+                {q:"¿Dato o espada?", a:"Rigor histórico real", b:"Acción de época"},
                 {q:"¿Rey o siervo?", a:"Cortes reales", b:"La vida del pueblo"},
-                {q:"¿Clase o patria?", a:"Diferencias sociales", b:"Honor y guerra"},
                 {q:"¿Lujo u oeste?", a:"Pelucas y lujo", b:"Polvo y revólver"},
-                {q:"¿Fiel o novela?", a:"Rigor histórico", b:"Una buena mentira"},
-                {q:"¿Secreto o diario?", a:"Misterios del pasado", b:"Día a día cotidiano"},
-                {q:"¿Arte o poder?", a:"Pinceles y cultura", b:"Cañones y estrategia"},
                 {q:"¿Pasado o presente?", a:"Ayer puro", b:"Conexión con el hoy"}
             ]}
         };
@@ -200,6 +178,7 @@
 
         function init() {
             const grid = document.getElementById('grid');
+            grid.innerHTML = '';
             for (const [key, val] of Object.entries(data)) {
                 const card = document.createElement('div');
                 card.className = 'card';
@@ -250,19 +229,20 @@
             document.getElementById('scanner-view').style.display = 'none';
             document.getElementById('res-view').style.display = 'block';
             try {
+                // PARAMETRO langRestrict=es OBLIGATORIO PARA SINOPSIS EN ESPAÑOL
                 const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:${currentGenre}&maxResults=5&langRestrict=es`);
                 const books = await res.json();
                 
                 if(books.items) {
                     const main = books.items[0].volumeInfo;
                     document.getElementById('res-data').innerHTML = `
-                        <div style="flex:1; text-align:center"><img src="${data[currentGenre].img}" style="width:320px; filter: drop-shadow(0 0 30px var(--accent))"></div>
+                        <div style="flex:1; text-align:center"><img src="${data[currentGenre].img}" style="width:280px; filter: drop-shadow(0 0 30px var(--accent))"></div>
                         <div style="flex:1.5">
-                            <h2 style="font-size:3.5rem; font-weight:900; margin-bottom:1rem; letter-spacing: -0.04em; text-transform: uppercase;">${main.title}</h2>
-                            <p style="color:var(--accent); font-weight:700; font-size:1rem; letter-spacing:0.2em;">${main.authors?.join(', ')}</p>
-                            <img src="${main.imageLinks?.thumbnail || ''}" class="book-img blur-load" onload="this.classList.remove('blur-load')" style="margin:2.5rem 0;">
-                            <p style="line-height:1.7; color:#888; font-size:1.1rem">${main.description ? main.description.substring(0,400) + '...' : 'Sinopsis no disponible.'}</p>
-                            <a href="https://www.amazon.es/s?k=${encodeURIComponent(main.title)}&tag=storyskin-21" target="_blank" class="amazon-btn">COMPRAR ESTA AVENTURA</a>
+                            <h2 style="font-size:2.5rem; font-weight:900; margin-bottom:1rem; text-transform: uppercase;">${main.title}</h2>
+                            <p style="color:var(--accent); font-weight:700; font-size:0.9rem;">${main.authors?.join(', ')}</p>
+                            <img src="${main.imageLinks?.thumbnail || ''}" class="book-img blur-load" onload="this.classList.remove('blur-load')" style="margin:2rem 0;">
+                            <p style="line-height:1.7; color:#888; font-size:1rem">${main.description ? main.description.substring(0,350) + '...' : 'Sinopsis en español no disponible.'}</p>
+                            <a href="https://www.amazon.es/s?k=${encodeURIComponent(main.title)}&tag=storyskin-21" target="_blank" class="amazon-btn">CONSEGUIR ESTA PIEL</a>
                         </div>`;
 
                     const grid = document.getElementById('res-grid');
@@ -270,15 +250,15 @@
                     books.items.slice(1).forEach(b => {
                         const info = b.volumeInfo;
                         grid.innerHTML += `
-                            <div style="background:var(--glass); padding:2.5rem; border-radius:30px; text-align:center; border: 1px solid var(--border)">
-                                <img src="${info.imageLinks?.thumbnail || ''}" class="blur-load" onload="this.classList.remove('blur-load')" style="width:110px; border-radius:6px; margin-bottom:1.5rem">
-                                <h4 style="font-size:0.8rem; letter-spacing:0.1em; margin-bottom:1rem; font-weight:700; text-transform:uppercase;">${info.title}</h4>
+                            <div style="background:var(--glass); padding:1.5rem; border-radius:24px; text-align:center; border: 1px solid var(--border)">
+                                <img src="${info.imageLinks?.thumbnail || ''}" class="blur-load" onload="this.classList.remove('blur-load')" style="width:100px; border-radius:6px; margin-bottom:1rem">
+                                <h4 style="font-size:0.8rem; margin-bottom:1rem; font-weight:700; text-transform:uppercase;">${info.title}</h4>
                                 <a href="https://www.amazon.es/s?k=${encodeURIComponent(info.title)}&tag=storyskin-21" target="_blank" style="color:var(--accent); text-decoration:none; font-weight:700; font-size:0.7rem;">AMAZON</a>
                             </div>`;
                     });
                 }
             } catch (e) {
-                document.getElementById('res-data').innerHTML = "<p>Error al conectar con la biblioteca. Reintenta.</p>";
+                document.getElementById('res-data').innerHTML = "<p>Error de conexión. Reintenta.</p>";
             }
         }
         init();
