@@ -3,208 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="StorySkin - El recomendador de libros gamberro.">
-    <title>StorySkin - Elige tu próxima piel literaria</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
-    
+    <title>StorySkin | ¿Quién quieres ser hoy?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4853214655991551" crossorigin="anonymous"></script>
-    
     <style>
-        :root {
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
-            --bg-dark: #050507;
-            --accent: #a855f7;
-            --text-secondary: #94a3b8;
-        }
-
+        :root { --accent: #a855f7; --bg: #050507; --glass: rgba(255,255,255,0.03); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        
+        /* Fondo Dinámico */
+        .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.15), transparent 70%); z-index: -1; }
 
-        body {
-            background-color: var(--bg-dark);
-            background-image: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 80%);
-            color: #fff;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            text-align: center;
-        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 4rem 2rem; }
+        
+        .hero-section { text-align: center; margin-bottom: 6rem; }
+        .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(4rem, 15vw, 9rem); line-height: 0.8; background: linear-gradient(to bottom, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -4px; }
+        .hero-tag { color: #94a3b8; font-size: 1.2rem; margin-top: 2rem; font-weight: 300; letter-spacing: 2px; }
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        /* Grid de Personajes */
+        .character-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem; }
+        .char-item { position: relative; cursor: pointer; transition: 0.5s cubic-bezier(0.2, 1, 0.3, 1); text-align: center; }
+        .char-item:hover { transform: translateY(-20px); }
+        
+        .char-img { width: 100%; height: 400px; object-fit: contain; filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8)); transition: 0.5s; }
+        .char-item:hover .char-img { transform: scale(1.1); filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.4)); }
 
-        .hero-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 10vw, 7rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            background: linear-gradient(to bottom, #fff 40%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-top: 3rem;
-        }
+        .bubble { position: absolute; top: 0; left: 50%; transform: translateX(-50%) translateY(20px); background: white; color: black; padding: 1rem; border-radius: 15px; font-weight: 800; font-size: 0.8rem; width: 200px; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 10; }
+        .char-item:hover .bubble { opacity: 1; transform: translateX(-50%) translateY(-20px); }
 
-        .site-desc { color: var(--text-secondary); margin-bottom: 4rem; font-size: 1.2rem; }
+        .char-name { font-size: 2rem; font-weight: 900; text-transform: uppercase; margin-top: 1rem; opacity: 0.5; transition: 0.3s; }
+        .char-item:hover .char-name { opacity: 1; color: var(--accent); }
 
-        .genre-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+        /* Quiz Overlay */
+        #quiz-wrap { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 100; justify-content: center; align-items: center; padding: 2rem; }
+        .quiz-card { max-width: 800px; width: 100%; text-align: center; }
+        .q-text { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 4rem; line-height: 1.1; }
+        .ans-row { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .btn-ans { flex: 1; padding: 2rem; background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 20px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-ans:hover { background: white; color: black; }
 
-        .genre-card {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 3rem 1rem;
-            cursor: pointer;
-            transition: 0.4s;
-            position: relative;
-        }
-
-        .genre-card:hover { transform: translateY(-15px); border-color: var(--accent); background: rgba(255,255,255,0.08); }
-
-        .curiosity-bubble {
-            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            background: #fff; color: #000; padding: 10px; border-radius: 10px;
-            font-size: 0.8rem; font-weight: 700; width: 200px; opacity: 0; transition: 0.3s;
-        }
-
-        .genre-card:hover .curiosity-bubble { opacity: 1; }
-
-        .character-img { width: 100%; height: 250px; object-fit: contain; margin-bottom: 1rem; filter: drop-shadow(0 10px 20px #000); }
-
-        .genre-name { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; }
-
-        /* Pantallas */
-        #quizScreen, #resultsScreen { display: none; padding-top: 5rem; }
-
-        .question-text { font-size: 2.5rem; font-weight: 700; margin-bottom: 3rem; }
-
-        .answer-btn {
-            background: var(--glass); border: 1px solid var(--border);
-            color: #fff; padding: 1.5rem 3rem; border-radius: 20px;
-            font-size: 1.2rem; cursor: pointer; margin: 1rem; transition: 0.3s;
-        }
-
-        .answer-btn:hover { background: #fff; color: #000; }
-
-        .amazon-btn { background: #FF9900; color: #000; padding: 1rem 2rem; border-radius: 10px; font-weight: 800; text-decoration: none; display: inline-block; margin-top: 1rem; }
+        /* Results */
+        #res-wrap { display: none; padding: 4rem 2rem; text-align: center; }
+        .res-main { display: flex; gap: 4rem; align-items: center; background: var(--glass); padding: 4rem; border-radius: 40px; margin-bottom: 4rem; flex-wrap: wrap; }
+        .book-img { width: 250px; border-radius: 15px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        .buy-btn { display: inline-block; background: #FF9900; color: black; padding: 1.5rem 3rem; border-radius: 15px; font-weight: 900; text-decoration: none; margin-top: 2rem; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="homeScreen">
+    <div class="bg-glow"></div>
+    
+    <div id="home" class="container">
+        <div class="hero-section">
             <h1 class="hero-title">STORYSKIN</h1>
-            <p class="site-desc">El recomendador de libros que te pregunta quién quieres ser hoy.</p>
-            <div id="genreGrid" class="genre-grid"></div>
+            <p class="hero-tag">ELIGE TU PIEL. ENCUENTRA TU AVENTURA.</p>
         </div>
+        <div id="char-grid" class="character-grid"></div>
+    </div>
 
-        <div id="quizScreen">
-            <div class="question-text" id="questionText"></div>
-            <div id="answers"></div>
-        </div>
-
-        <div id="resultsScreen">
-            <div id="mainResult"></div>
-            <div id="othersGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 4rem;"></div>
-            <button class="answer-btn" onclick="location.reload()" style="margin-top: 4rem;">🔄 REINTENTAR</button>
+    <div id="quiz-wrap">
+        <div class="quiz-card">
+            <div id="q-text" class="q-text"></div>
+            <div class="ans-row" id="ans-row"></div>
         </div>
     </div>
 
+    <div id="res-wrap" class="container">
+        <div id="res-content" class="res-main"></div>
+        <div id="res-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;"></div>
+        <button class="btn-ans" onclick="location.reload()" style="margin-top: 5rem; max-width: 300px;">🔄 VOLVER A EMPEZAR</button>
+    </div>
+
     <script>
-        const storySkinData = {
-            fantasy: {
-                name: "Fantasía",
-                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/1f494qll-removebg-preview.png",
-                curiosity: "Tolkien inventó los idiomas antes que las historias.",
-                query: "fantasy epic",
-                questions: [
-                    { q: "¿Aventura rápida o saga de 10 tomos?", a: "Libro único", b: "Saga infinita" },
-                    { q: "¿Magia de purpurina o rituales de sangre?", a: "Hadas", b: "Oscuro" }
-                    // Aquí se añaden las 10 preguntas que definimos antes
-                ]
-            },
-            scifi: {
-                name: "Sci-Fi",
-                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/pngtree-d-render-of-a-female-game-character-set-in-cyberpunk-universe-png-image_16355028-removebg-preview.png",
-                curiosity: "Frankenstein fue la primera obra de Sci-Fi.",
-                query: "science fiction cyberpunk",
-                questions: [
-                    { q: "¿Estamos solos o somos un error?", a: "Solos", b: "Aliens" },
-                    { q: "¿IA amiga o Skynet?", a: "Maja", b: "Asesina" }
-                ]
-            },
-            thriller: {
-                name: "Thriller",
-                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/d7nt4mr2-removebg-preview.png",
-                curiosity: "El Cliffhanger nació en el siglo XIX.",
-                query: "thriller murder",
-                questions: [
-                    { q: "¿Asesinato elegante o carnicería?", a: "Elegante", b: "Gore" },
-                    { q: "¿Poli bueno o mente criminal?", a: "Poli", b: "Psicópata" }
-                ]
-            },
-            horror: {
-                name: "Terror",
-                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/ztyecjla-removebg-preview.png",
-                curiosity: "Stephen King rescató 'Carrie' de la basura.",
-                query: "horror terror",
-                questions: [
-                    { q: "¿Dormir hoy o infarto en el armario?", a: "Dormir", b: "Pesadillas" },
-                    { q: "¿Fantasmas o humanos locos?", a: "Fantasmas", b: "Humanos" }
-                ]
-            }
+        const lang = navigator.language.startsWith('es') ? 'es' : 'en';
+        const data = {
+            fantasy: { name: "Fantasía", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/1f494qll-removebg-preview.png", curios: "Tolkien inventó idiomas antes que historias.", q: [
+                {q:"¿Gesta rápida o saga de 10 tomos?", a:"Libro único", b:"Saga"}, {q:"¿Magia de purpurina o rituales de sangre?", a:"Hadas", b:"Oscuro"}, {q:"¿Dragones o monstruos raros?", a:"Clásico", b:"Original"}, {q:"¿Castillos o elfos en Instagram?", a:"Medieval", b:"Urbano"}, {q:"¿Final feliz o tragedia?", a:"Feliz", b:"Cruel"}, {q:"¿Héroe o antihéroe?", a:"Noble", b:"Canalla"}, {q:"¿Simple o complejo?", a:"Fácil", b:"Hard Magic"}, {q:"¿Salvar o robar?", a:"Héroe", b:"Ladrón"}, {q:"¿Política o espadas?", a:"Intriga", b:"Acción"}, {q:"¿Lealtad o traición?", a:"Amigo", b:"Puñalada"}
+            ]},
+            thriller: { name: "Thriller", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/d7nt4mr2-removebg-preview.png", curios: "El Cliffhanger nació en el siglo XIX.", q: [
+                {q:"¿Asesinato elegante o carnicería?", a:"Elegante", b:"Gore"}, {q:"¿Lento o persecución?", a:"Cerebral", b:"Frenético"}, {q:"¿Poli o psicópata?", a:"Detective", b:"Asesino"}, {q:"¿ADN real o conspiración?", a:"Forense", b:"Illuminati"}, {q:"¿Pueblo o ciudad corrupta?", a:"Pueblo", b:"Metrópolis"}, {q:"¿Deducción o giro loco?", a:"Pistas", b:"Mind-blow"}, {q:"¿Mental o acción?", a:"Tensión", b:"Gatillo"}, {q:"¿Lógica o paranormal?", a:"Real", b:"Extraño"}, {q:"¿Genio o civil?", a:"Holmes", b:"Víctima"}, {q:"¿Justicia o maldad?", a:"Justicia", b:"El mal gana"}
+            ]},
+            scifi: { name: "Sci-Fi", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/pngtree-d-render-of-a-female-game-character-set-in-cyberpunk-universe-png-image_16355028-removebg-preview.png", curios: "Frankenstein fue la primera Sci-Fi.", q: [
+                {q:"¿Solos o con aliens?", a:"Solos", b:"Contacto"}, {q:"¿Espacio o Cyberpunk?", a:"Naves", b:"Neón"}, {q:"¿IA amiga o Skynet?", a:"Maja", b:"Asesina"}, {q:"¿Acción o física cuántica?", a:"Palomitas", b:"Hard Sci-Fi"}, {q:"¿Utopía o distopía?", a:"Luz", b:"Oscuro"}, {q:"¿Pasado o futuro lejano?", a:"Tiempo", b:"Eones"}, {q:"¿Fantasía o realismo?", a:"Star Wars", b:"Interstellar"}, {q:"¿Planetas o estación?", a:"Explorar", b:"Encierro"}, {q:"¿Implantes o bio?", a:"Cyborg", b:"Natural"}, {q:"¿Moraleja o vacío?", a:"Cierre", b:"Existencial"}
+            ]},
+            horror: { name: "Terror", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/ztyecjla-removebg-preview.png", curios: "Miedo al 13 es triscadecafobia.", q: [
+                {q:"¿Dormir o infarto?", a:"Poco", b:"Nada"}, {q:"¿Fantasmas o locos?", a:"Espíritus", b:"Psicópatas"}, {q:"¿Casa o bosque?", a:"Encierro", b:"Exterior"}, {q:"¿Sangre o sustos?", a:"Gore", b:"Psicológico"}, {q:"¿Lento o constante?", a:"Tensión", b:"Jumpscare"}, {q:"¿Vivir o morir?", a:"Heroe", b:"Cadáver"}, {q:"¿Íntimo o masivo?", a:"Claustro", b:"Zombis"}, {q:"¿Payasos o tecnología?", a:"Clásico", b:"Moderno"}, {q:"¿Pelear o correr?", a:"Lucha", b:"Víctima"}, {q:"¿Bajo la cama?", a:"No miro", b:"Miedo"}
+            ]},
+            coming: { name: "Juvenil", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/pa646132-removebg-preview.png", curios: "Refleja el paso a la madurez.", q: [
+                {q:"¿Instituto o Uni?", a:"Clase", b:"Libertad"}, {q:"¿Dulce o caos?", a:"Love", b:"Rebelde"}, {q:"¿Amigos o solo?", a:"Grupo", b:"Self-made"}, {q:"¿Primer amor o dolor?", a:"Besos", b:"Drama"}, {q:"¿Hogar o huida?", a:"Casa", b:"Coche"}, {q:"¿Poeta o gamberro?", a:"Alma", b:"Puño"}, {q:"¿Identidad o encajar?", a:"Yo", b:"Ellos"}, {q:"¿Barrio o gran ciudad?", a:"Cerca", b:"Lejos"}, {q:"¿Crecer o Peter Pan?", a:"Adulto", b:"Niño"}, {q:"¿Esperanza o adiós?", a:"Futuro", b:"Melancolía"}
+            ]},
+            modern: { name: "Actual", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/9e7625v9-removebg-preview.png", curios: "Busca el 'aquí y ahora'.", q: [
+                {q:"¿Normal o épico?", a:"Día a día", b:"Hazaña"}, {q:"¿Humor o drama?", a:"Risas", b:"Llantos"}, {q:"¿Ciudad o campo?", a:"Asfalto", b:"Verde"}, {q:"¿Familia o curro?", a:"Cena", b:"Oficina"}, {q:"¿Amor o rutina?", a:"Pasión", b:"Vida"}, {q:"¿Igual o cambio?", a:"Estable", b:"Giro"}, {q:"¿Crudo o feliz?", a:"Real", b:"Cuqui"}, {q:"¿Social o personal?", a:"Mundo", b:"Mente"}, {q:"¿Éxito o invisible?", a:"Fama", b:"Paz"}, {q:"¿Abierto o cerrado?", a:"Duda", b:"Final"}
+            ]},
+            history: { name: "Histórica", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/lkl3ol1e-removebg-preview.png", curios: "Walter Scott es el padre.", q: [
+                {q:"¿Té o trincheras?", a:"Salón", b:"Barro"}, {q:"¿Clase o aventura?", a:"Dato", b:"Espada"}, {q:"¿Poder o amor?", a:"Trono", b:"Cama"}, {q:"¿Reales o inventados?", a:"Rey", b:"Campesino"}, {q:"¿Clase o patria?", a:"Social", b:"Guerra"}, {q:"¿Lujo u oeste?", a:"Corte", b:"Polvo"}, {q:"¿Fiel o loco?", a:"Realista", b:"Novela"}, {q:"¿Secreto o diario?", a:"Misterio", b:"Vida"}, {q:"¿Arte o guerra?", a:"Pincel", b:"Cañón"}, {q:"¿Pasado o presente?", a:"Ayer", b:"Hoy"}
+            ]},
+            erotica: { name: "Erótica", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/ehznlag1-removebg-preview.png", curios: "Es el motor de ventas actual.", q: [
+                {q:"¿Tensión o fuego?", a:"Roce", b:"Incendio"}, {q:"¿Enemigos o cama?", a:"Odio", b:"Obligación"}, {q:"¿Amor o deseo?", a:"Corazón", b:"Pulsión"}, {q:"¿Risas o peligro?", a:"Dulce", b:"Oscuro"}, {q:"¿Oficina o magia?", a:"Jefe", b:"Vampiro"}, {q:"¿Absurdo o secreto?", a:"Risa", b:"Tabú"}, {q:"¿Feliz o crudo?", a:"Boda", b:"Real"}, {q:"¿Poder o igual?", a:"Sumiso", b:"Pareja"}, {q:"¿Rico o vecino?", a:"Oro", b:"Normal"}, {q:"¿Mariposas o llamas?", a:"Tierno", b:"Brasas"}
+            ]}
         };
 
-        let currentGenre = null;
-        let currentQ = 0;
+        let currentGenre = null, currentQ = 0;
 
-        function renderHome() {
-            const grid = document.getElementById('genreGrid');
-            for (const [key, data] of Object.entries(storySkinData)) {
-                grid.innerHTML += `
-                    <div class="genre-card" onclick="startQuiz('${key}')">
-                        <div class="curiosity-bubble">${data.curiosity}</div>
-                        <img src="${data.img}" class="character-img">
-                        <div class="genre-name">${data.name}</div>
-                    </div>`;
+        function init() {
+            const grid = document.getElementById('char-grid');
+            for (const [key, val] of Object.entries(data)) {
+                grid.innerHTML += `<div class="char-item" onclick="start('${key}')">
+                    <div class="bubble">${val.curios}</div>
+                    <img src="${val.img}" class="char-img">
+                    <div class="char-name">${val.name}</div>
+                </div>`;
             }
         }
 
-        function startQuiz(key) {
-            currentGenre = key;
-            document.getElementById('homeScreen').style.display = 'none';
-            document.getElementById('quizScreen').style.display = 'block';
-            showQuestion();
+        function start(key) {
+            currentGenre = key; currentQ = 0;
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('quiz-wrap').style.display = 'flex';
+            renderQ();
         }
 
-        function showQuestion() {
-            const data = storySkinData[currentGenre].questions[currentQ];
-            document.getElementById('questionText').innerText = data.q;
-            document.getElementById('answers').innerHTML = `
-                <button class="answer-btn" onclick="next()">${data.a}</button>
-                <button class="answer-btn" onclick="next()">${data.b}</button>`;
+        function renderQ() {
+            const q = data[currentGenre].q[currentQ];
+            document.getElementById('q-text').innerText = q.q;
+            document.getElementById('ans-row').innerHTML = `
+                <button class="btn-ans" onclick="next()">${q.a}</button>
+                <button class="answer-btn" onclick="next()" style="flex:1; padding:2rem; background:var(--glass); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:20px; font-size:1.2rem; font-weight:700; cursor:pointer; transition:0.3s;">${q.b}</button>`;
         }
 
         function next() {
             currentQ++;
-            if (currentQ < storySkinData[currentGenre].questions.length) showQuestion();
-            else fetchBooks();
+            if (currentQ < 10) renderQ(); else finish();
         }
 
-        async function fetchBooks() {
-            document.getElementById('quizScreen').style.display = 'none';
-            document.getElementById('resultsScreen').style.display = 'block';
-            const genre = storySkinData[currentGenre];
-            const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:${genre.query}&maxResults=5`);
-            const data = await res.json();
-            
-            const main = data.items[0].volumeInfo;
-            document.getElementById('mainResult').innerHTML = `
-                <img src="${main.imageLinks?.thumbnail}" style="width:200px">
-                <h2>${main.title}</h2>
-                <a href="https://www.amazon.es/s?k=${main.title}&tag=storyskin-21" class="amazon-btn">COMPRAR EN AMAZON</a>`;
+        async function finish() {
+            document.getElementById('quiz-wrap').style.display = 'none';
+            document.getElementById('res-wrap').style.display = 'block';
+            const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:${currentGenre}&maxResults=5&langRestrict=${lang}`);
+            const books = await res.json();
+            const main = books.items[0].volumeInfo;
+            document.getElementById('res-content').innerHTML = `
+                <div style="flex:1; text-align:center"><img src="${data[currentGenre].img}" style="width:300px"></div>
+                <div style="flex:1.5; text-align:left">
+                    <img src="${main.imageLinks?.thumbnail}" class="book-img">
+                    <h2 style="font-size:3rem; margin:1rem 0">${main.title}</h2>
+                    <p style="color:var(--accent); font-weight:900">${main.authors?.join(', ')}</p>
+                    <p style="margin:2rem 0; line-height:1.6; color:#94a3b8">${main.description?.substring(0,300)}...</p>
+                    <a href="https://www.amazon.es/s?k=${main.title}&tag=storyskin-21" class="buy-btn" target="_blank">🔥 COMPRAR AHORA</a>
+                </div>`;
         }
 
-        renderHome();
+        init();
     </script>
 </body>
 </html>
