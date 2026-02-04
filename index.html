@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="StorySkin - El recomendador de libros gamberro.">
+    <title>StorySkin - Elige tu próxima piel literaria</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+    
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4853214655991551" crossorigin="anonymous"></script>
+    
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --bg-dark: #050507;
+            --accent: #a855f7;
+            --text-secondary: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 80%);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            background: linear-gradient(to bottom, #fff 40%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 3rem;
+        }
+
+        .site-desc { color: var(--text-secondary); margin-bottom: 4rem; font-size: 1.2rem; }
+
+        .genre-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+
+        .genre-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 3rem 1rem;
+            cursor: pointer;
+            transition: 0.4s;
+            position: relative;
+        }
+
+        .genre-card:hover { transform: translateY(-15px); border-color: var(--accent); background: rgba(255,255,255,0.08); }
+
+        .curiosity-bubble {
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            background: #fff; color: #000; padding: 10px; border-radius: 10px;
+            font-size: 0.8rem; font-weight: 700; width: 200px; opacity: 0; transition: 0.3s;
+        }
+
+        .genre-card:hover .curiosity-bubble { opacity: 1; }
+
+        .character-img { width: 100%; height: 250px; object-fit: contain; margin-bottom: 1rem; filter: drop-shadow(0 10px 20px #000); }
+
+        .genre-name { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; }
+
+        /* Pantallas */
+        #quizScreen, #resultsScreen { display: none; padding-top: 5rem; }
+
+        .question-text { font-size: 2.5rem; font-weight: 700; margin-bottom: 3rem; }
+
+        .answer-btn {
+            background: var(--glass); border: 1px solid var(--border);
+            color: #fff; padding: 1.5rem 3rem; border-radius: 20px;
+            font-size: 1.2rem; cursor: pointer; margin: 1rem; transition: 0.3s;
+        }
+
+        .answer-btn:hover { background: #fff; color: #000; }
+
+        .amazon-btn { background: #FF9900; color: #000; padding: 1rem 2rem; border-radius: 10px; font-weight: 800; text-decoration: none; display: inline-block; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="homeScreen">
+            <h1 class="hero-title">STORYSKIN</h1>
+            <p class="site-desc">El recomendador de libros que te pregunta quién quieres ser hoy.</p>
+            <div id="genreGrid" class="genre-grid"></div>
+        </div>
+
+        <div id="quizScreen">
+            <div class="question-text" id="questionText"></div>
+            <div id="answers"></div>
+        </div>
+
+        <div id="resultsScreen">
+            <div id="mainResult"></div>
+            <div id="othersGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 4rem;"></div>
+            <button class="answer-btn" onclick="location.reload()" style="margin-top: 4rem;">🔄 REINTENTAR</button>
+        </div>
+    </div>
+
+    <script>
+        const storySkinData = {
+            fantasy: {
+                name: "Fantasía",
+                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/1f494qll-removebg-preview.png",
+                curiosity: "Tolkien inventó los idiomas antes que las historias.",
+                query: "fantasy epic",
+                questions: [
+                    { q: "¿Aventura rápida o saga de 10 tomos?", a: "Libro único", b: "Saga infinita" },
+                    { q: "¿Magia de purpurina o rituales de sangre?", a: "Hadas", b: "Oscuro" }
+                    // Aquí se añaden las 10 preguntas que definimos antes
+                ]
+            },
+            scifi: {
+                name: "Sci-Fi",
+                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/pngtree-d-render-of-a-female-game-character-set-in-cyberpunk-universe-png-image_16355028-removebg-preview.png",
+                curiosity: "Frankenstein fue la primera obra de Sci-Fi.",
+                query: "science fiction cyberpunk",
+                questions: [
+                    { q: "¿Estamos solos o somos un error?", a: "Solos", b: "Aliens" },
+                    { q: "¿IA amiga o Skynet?", a: "Maja", b: "Asesina" }
+                ]
+            },
+            thriller: {
+                name: "Thriller",
+                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/d7nt4mr2-removebg-preview.png",
+                curiosity: "El Cliffhanger nació en el siglo XIX.",
+                query: "thriller murder",
+                questions: [
+                    { q: "¿Asesinato elegante o carnicería?", a: "Elegante", b: "Gore" },
+                    { q: "¿Poli bueno o mente criminal?", a: "Poli", b: "Psicópata" }
+                ]
+            },
+            horror: {
+                name: "Terror",
+                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/ztyecjla-removebg-preview.png",
+                curiosity: "Stephen King rescató 'Carrie' de la basura.",
+                query: "horror terror",
+                questions: [
+                    { q: "¿Dormir hoy o infarto en el armario?", a: "Dormir", b: "Pesadillas" },
+                    { q: "¿Fantasmas o humanos locos?", a: "Fantasmas", b: "Humanos" }
+                ]
+            }
+        };
+
+        let currentGenre = null;
+        let currentQ = 0;
+
+        function renderHome() {
+            const grid = document.getElementById('genreGrid');
+            for (const [key, data] of Object.entries(storySkinData)) {
+                grid.innerHTML += `
+                    <div class="genre-card" onclick="startQuiz('${key}')">
+                        <div class="curiosity-bubble">${data.curiosity}</div>
+                        <img src="${data.img}" class="character-img">
+                        <div class="genre-name">${data.name}</div>
+                    </div>`;
+            }
+        }
+
+        function startQuiz(key) {
+            currentGenre = key;
+            document.getElementById('homeScreen').style.display = 'none';
+            document.getElementById('quizScreen').style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const data = storySkinData[currentGenre].questions[currentQ];
+            document.getElementById('questionText').innerText = data.q;
+            document.getElementById('answers').innerHTML = `
+                <button class="answer-btn" onclick="next()">${data.a}</button>
+                <button class="answer-btn" onclick="next()">${data.b}</button>`;
+        }
+
+        function next() {
+            currentQ++;
+            if (currentQ < storySkinData[currentGenre].questions.length) showQuestion();
+            else fetchBooks();
+        }
+
+        async function fetchBooks() {
+            document.getElementById('quizScreen').style.display = 'none';
+            document.getElementById('resultsScreen').style.display = 'block';
+            const genre = storySkinData[currentGenre];
+            const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:${genre.query}&maxResults=5`);
+            const data = await res.json();
+            
+            const main = data.items[0].volumeInfo;
+            document.getElementById('mainResult').innerHTML = `
+                <img src="${main.imageLinks?.thumbnail}" style="width:200px">
+                <h2>${main.title}</h2>
+                <a href="https://www.amazon.es/s?k=${main.title}&tag=storyskin-21" class="amazon-btn">COMPRAR EN AMAZON</a>`;
+        }
+
+        renderHome();
+    </script>
+</body>
+</html>
