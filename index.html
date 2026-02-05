@@ -3,1362 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>STORYSKIN | Tu Próximo Yo Literario</title>
+    <title>STORYSKIN | Tu ADN Literario</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     
-    <!-- Particles.js -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    
-    <!-- Analytics & AdSense -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
-    </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4853214655991551" crossorigin="anonymous"></script>
     
     <style>
         :root { 
             --accent: #8b5cf6; 
-            --accent-glow: rgba(139, 92, 246, 0.3);
+            --accent-glow: rgba(139, 92, 246, 0.25);
             --bg: #000000; 
-            --glass: rgba(255,255,255,0.03); 
-            --glass-hover: rgba(255,255,255,0.06);
-            --border: rgba(255,255,255,0.06); 
-            --border-hover: rgba(139, 92, 246, 0.3);
-            --text-primary: #ffffff;
-            --text-secondary: #888888;
-            --text-tertiary: #444444;
+            --glass: rgba(255,255,255,0.02); 
+            --border: rgba(255,255,255,0.05); 
+            --text-secondary: #a0a0a0;
         }
         
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         
         body { 
             background: var(--bg); 
-            color: var(--text-primary); 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-            overflow-x: hidden;
-            min-height: 100vh;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%238b5cf6" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>'), auto;
+            color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; min-height: 100vh;
         }
 
-        /* CURSOR CUSTOM POR GÉNERO */
-        .card:hover {
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="%238b5cf6"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>'), pointer !important;
-        }
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        #constellations { position: fixed; width: 100%; height: 100%; z-index: 0; opacity: 0.2; pointer-events: none; }
 
-        /* PARTICLES BACKGROUND */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-        }
+        #loader { position: fixed; inset: 0; background: #000; display: flex; align-items: center; justify-content: center; z-index: 10000; transition: opacity 0.8s; }
+        #loader.hide { opacity: 0; visibility: hidden; }
+        .loader-logo { font-family: 'Space Grotesk'; font-size: 3rem; letter-spacing: 0.3em; background: linear-gradient(135deg, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulse 2s infinite; }
 
-        /* CONSTELLATIONS CANVAS */
-        #constellations {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            opacity: 0.3;
-        }
-
-        /* LOADER */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-        
-        #loader.hide {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader-content {
-            text-align: center;
-        }
-
-        .loader-logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 4rem;
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .loader-bar {
-            width: 200px;
-            height: 2px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 0 auto;
-        }
-
-        .loader-progress {
-            height: 100%;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            animation: loading 1.5s ease-in-out infinite;
-            border-radius: 10px;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(0.98); }
-        }
-
-        @keyframes loading {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(200%); }
-        }
-
-        /* CONTAINER */
-        .container { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 5rem 2rem; 
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* HERO SECTION */
-        .hero { 
-            text-align: center; 
-            margin-bottom: 8rem;
-            position: relative;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-            opacity: 0.3;
-            pointer-events: none;
-            animation: breathe 4s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-            0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.3; }
-            50% { transform: translateX(-50%) scale(1.1); opacity: 0.2; }
-        }
-        
-        /* TÍTULO PRISMÁTICO */
+        .container { max-width: 1400px; margin: 0 auto; padding: 4rem 1.5rem; position: relative; z-index: 1; }
+        .hero { text-align: center; margin-bottom: 6rem; }
         .hero-title { 
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(3rem, 15vw, 9rem); 
-            font-weight: 700; 
-            letter-spacing: 0.2em; 
-            text-transform: uppercase; 
-            margin-bottom: 2rem;
-            position: relative;
-            z-index: 1;
-            line-height: 0.9;
-            animation: fadeInDown 1s ease 0.3s both;
-            background: linear-gradient(45deg, 
-                #ff0080 0%, 
-                #ff8c00 20%, 
-                #40e0d0 40%, 
-                #8b5cf6 60%, 
-                #ff0080 80%, 
-                #ff8c00 100%
-            );
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: prismShift 8s ease infinite, fadeInDown 1s ease 0.3s both;
-            text-shadow: 
-                2px 2px 4px rgba(139, 92, 246, 0.3),
-                -2px -2px 4px rgba(255, 0, 128, 0.3);
-            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.4));
+            font-family: 'Space Grotesk'; font-size: clamp(2.2rem, 10vw, 8rem); font-weight: 700; letter-spacing: 0.2em; 
+            background: linear-gradient(135deg, #fff, #888, var(--accent), #fff); background-size: 200% auto;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 8s infinite; line-height: 1;
         }
+        @keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
-        @keyframes prismShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .hero-badge {
-            display: inline-block;
-            padding: 0.5rem 1.5rem;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            font-weight: 600;
-            animation: fadeIn 1s ease 0.7s both;
-        }
-
-        .hero-desc { 
-            max-width: 650px; 
-            margin: 0 auto; 
-            color: var(--text-secondary); 
-            font-size: 1.3rem; 
-            line-height: 1.8;
-            font-weight: 300;
-            position: relative;
-            z-index: 1;
-            animation: fadeInUp 1s ease 0.5s both;
-        }
-
-        /* GENRE GRID */
-        .genre-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 4rem; 
-            margin-top: 4rem;
-            position: relative;
-            z-index: 1;
-        }
-        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 4rem; }
         .card { 
-            position: relative; 
-            text-align: center; 
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            cursor: pointer;
-            padding: 1rem;
-            opacity: 0;
-            transform: translateY(50px);
+            background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 32px; 
+            padding: 3rem 2rem; text-align: center; transition: 0.5s; cursor: pointer; position: relative;
         }
+        .card:hover { border-color: var(--accent); transform: translateY(-10px); box-shadow: 0 0 40px var(--accent-glow); }
 
-        /* REVEAL SECUENCIAL */
-        .card.reveal {
-            animation: cardReveal 0.8s ease forwards;
-        }
+        .char-img { width: 100%; height: 320px; object-fit: contain; filter: drop-shadow(0 0 20px #000); animation: float 6s ease-in-out infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        @keyframes cardReveal {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .card:nth-child(1) { animation-delay: 0.1s; }
-        .card:nth-child(2) { animation-delay: 0.2s; }
-        .card:nth-child(3) { animation-delay: 0.3s; }
-        .card:nth-child(4) { animation-delay: 0.4s; }
-        .card:nth-child(5) { animation-delay: 0.5s; }
-        .card:nth-child(6) { animation-delay: 0.6s; }
-        .card:nth-child(7) { animation-delay: 0.7s; }
-        .card:nth-child(8) { animation-delay: 0.8s; }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            inset: -1rem;
-            background: radial-gradient(circle at center, var(--accent-glow), transparent);
-            opacity: 0;
-            transition: opacity 0.6s ease;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
-        /* PARTÍCULAS MÁGICAS POR PERSONAJE */
-        .magic-particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.6s ease;
-        }
-
-        .card:hover .magic-particles {
-            opacity: 1;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: floatParticle 3s ease-in-out infinite;
-            box-shadow: 0 0 10px var(--accent);
-        }
-
-        @keyframes floatParticle {
-            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
-            50% { opacity: 1; }
-        }
-        
-        /* PERSONAJES CON BREATHING Y ANIMACIONES ESPECÍFICAS */
-        .char-img { 
-            width: 100%; 
-            height: 340px; 
-            object-fit: contain; 
-            filter: drop-shadow(0 25px 50px rgba(0,0,0,0.9)) grayscale(0.3) contrast(1.1); 
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            cursor: pointer;
-            position: relative;
-            z-index: 2;
-            animation: breathingChar 4s ease-in-out infinite;
-        }
-
-        @keyframes breathingChar {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-        
-        .card:hover .char-img { 
-            filter: drop-shadow(0 30px 60px var(--accent-glow)) grayscale(0) contrast(1.2);
-            animation: breathingChar 4s ease-in-out infinite, charSpecific 0.6s ease;
-        }
-
-        /* ANIMACIONES ESPECÍFICAS POR PERSONAJE */
-        .card:nth-child(1):hover .char-img { /* Fantasy - Guerrero levanta espada */
-            animation: breathingChar 4s ease-in-out infinite, liftSword 0.6s ease;
-        }
-        @keyframes liftSword {
-            0%, 100% { transform: scale(1.08) translateY(-10px) rotate(0deg); }
-            50% { transform: scale(1.08) translateY(-10px) rotate(2deg); }
-        }
-
-        .card:nth-child(2):hover .char-img { /* Thriller - Investigador inclina */
-            animation: breathingChar 4s ease-in-out infinite, tiltHead 0.6s ease;
-        }
-        @keyframes tiltHead {
-            0%, 100% { transform: scale(1.08) translateY(-10px) rotate(0deg); }
-            50% { transform: scale(1.08) translateY(-10px) rotate(-3deg); }
-        }
-
-        .card:nth-child(3):hover .char-img { /* Erotica - Movimiento seductor */
-            animation: breathingChar 4s ease-in-out infinite, seductive 0.8s ease;
-        }
-        @keyframes seductive {
-            0%, 100% { transform: scale(1.08) translateY(-10px); }
-            50% { transform: scale(1.1) translateY(-12px) translateX(3px); }
-        }
-
-        .card:nth-child(4):hover .char-img { /* Horror - Temblor */
-            animation: breathingChar 4s ease-in-out infinite, shiver 0.3s ease infinite;
-        }
-        @keyframes shiver {
-            0%, 100% { transform: scale(1.08) translateY(-10px) translateX(0); }
-            25% { transform: scale(1.08) translateY(-10px) translateX(-2px); }
-            75% { transform: scale(1.08) translateY(-10px) translateX(2px); }
-        }
-
-        .card:nth-child(5):hover .char-img { /* Sci-Fi - Glitch */
-            animation: breathingChar 4s ease-in-out infinite, glitch 0.4s ease;
-        }
-        @keyframes glitch {
-            0%, 100% { transform: scale(1.08) translateY(-10px); filter: drop-shadow(0 30px 60px var(--accent-glow)); }
-            25% { transform: scale(1.08) translateY(-10px) translateX(-3px); filter: drop-shadow(0 30px 60px rgba(255, 0, 0, 0.5)); }
-            50% { transform: scale(1.08) translateY(-10px) translateX(3px); filter: drop-shadow(0 30px 60px rgba(0, 255, 0, 0.5)); }
-            75% { transform: scale(1.08) translateY(-10px) translateX(-3px); filter: drop-shadow(0 30px 60px rgba(0, 0, 255, 0.5)); }
-        }
-
-        .card:nth-child(6):hover .char-img { /* Coming of Age - Salto juvenil */
-            animation: breathingChar 4s ease-in-out infinite, youthJump 0.6s ease;
-        }
-        @keyframes youthJump {
-            0%, 100% { transform: scale(1.08) translateY(-10px); }
-            50% { transform: scale(1.1) translateY(-20px); }
-        }
-
-        .card:nth-child(7):hover .char-img { /* Contemporary - Giro casual */
-            animation: breathingChar 4s ease-in-out infinite, casualTurn 0.8s ease;
-        }
-        @keyframes casualTurn {
-            0%, 100% { transform: scale(1.08) translateY(-10px) rotateY(0deg); }
-            50% { transform: scale(1.08) translateY(-10px) rotateY(15deg); }
-        }
-
-        .card:nth-child(8):hover .char-img { /* Historical - Reverencia */
-            animation: breathingChar 4s ease-in-out infinite, bow 0.8s ease;
-        }
-        @keyframes bow {
-            0%, 100% { transform: scale(1.08) translateY(-10px) rotate(0deg); }
-            50% { transform: scale(1.08) translateY(-5px) rotate(5deg); }
-        }
-
-        /* BUBBLE MEJORADO CON TYPING */
         .bubble { 
-            position: absolute; 
-            top: 0px; 
-            left: 50%; 
-            transform: translateX(-50%) translateY(-20px) scale(0.95); 
-            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-            color: #000000; 
-            padding: 1.2rem 1.8rem; 
-            border-radius: 16px; 
-            font-weight: 700; 
-            font-size: 0.9rem; 
-            width: 280px; 
-            opacity: 0; 
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            z-index: 100; 
-            pointer-events: none;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
-            line-height: 1.4;
-            min-height: 60px;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); 
+            background: rgba(0,0,0,0.95); border: 1px solid var(--accent); border-radius: 20px; padding: 1.5rem; 
+            width: 260px; opacity: 0; transition: 0.4s; z-index: 100; pointer-events: none; color: #fff; font-size: 0.9rem;
         }
-        
-        .bubble::after { 
-            content: ''; 
-            position: absolute; 
-            bottom: -10px; 
-            left: 50%; 
-            border-left: 10px solid transparent; 
-            border-right: 10px solid transparent; 
-            border-top: 10px solid #f0f0f0; 
-            transform: translateX(-50%); 
-        }
-
-        .bubble-text {
-            display: inline;
-        }
-
-        .typing-cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1em;
-            background: #000;
-            margin-left: 2px;
-            animation: blink 0.7s infinite;
-            vertical-align: text-bottom;
-        }
-
-        @keyframes blink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
-        }
-        
-        .card:hover .bubble, .card.active .bubble { 
-            opacity: 1; 
-            transform: translateX(-50%) translateY(-40px) scale(1); 
-        }
+        .card.active .bubble { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
         .genre-name { 
-            font-size: 0.8rem; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            letter-spacing: 0.3em; 
-            color: var(--text-tertiary); 
-            cursor: pointer; 
-            padding: 1.5rem; 
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 2;
+            font-family: 'Space Grotesk'; font-size: 1.3rem; font-weight: 700; text-transform: uppercase; 
+            letter-spacing: 0.15em; color: #888; margin-top: 1.5rem; transition: 0.3s;
         }
-        
-        .card:hover .genre-name { 
-            color: var(--text-primary); 
-            letter-spacing: 0.4em;
-        }
+        .card:hover .genre-name { color: #fff; }
+        .arrow-hint { display: inline-block; margin-left: 8px; transition: transform 0.3s; color: var(--accent); }
+        .card:hover .arrow-hint { transform: translateX(5px); }
 
-        /* QUIZ VIEW */
-        #quiz-view { 
-            display: none; 
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0,0,0,0.98);
-            backdrop-filter: blur(20px);
-            z-index: 1000; 
-            align-items: center; 
-            justify-content: center;
-            animation: fadeIn 0.6s ease;
-        }
+        #quiz-view { display: none; position: fixed; inset: 0; background: #000; z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(40px); }
+        .q-box { max-width: 800px; width: 90%; text-align: center; }
+        .prog-label { color: var(--accent); font-weight: 800; font-size: 0.8rem; letter-spacing: 0.3em; margin-bottom: 1rem; display: block; }
+        .progress-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.05); margin-bottom: 4rem; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); transition: 0.6s; width: 0%; box-shadow: 0 0 15px var(--accent); }
+        .q-text { font-size: clamp(1.4rem, 5vw, 2.8rem); font-weight: 900; margin-bottom: 4rem; line-height: 1.2; letter-spacing: -0.02em; }
+        .ans-btn { padding: 1.8rem; background: var(--glass); border: 1px solid var(--border); color: #fff; border-radius: 20px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: 0.3s; width: 100%; margin-bottom: 1rem; text-align: left; }
+        .ans-btn:hover { background: #fff; color: #000; transform: translateX(10px); }
 
-        .quiz-bg-effect {
-            position: absolute;
-            inset: 0;
-            background: 
-                radial-gradient(circle at 30% 50%, var(--accent-glow), transparent 60%),
-                radial-gradient(circle at 70% 50%, rgba(236, 72, 153, 0.1), transparent 60%);
-            opacity: 0.5;
-            animation: bgShift 10s ease-in-out infinite;
-        }
+        #scanner-view { display: none; position: fixed; inset: 0; background: #000; z-index: 2000; align-items: center; justify-content: center; flex-direction: column; }
+        .scan-line { width: 100%; height: 3px; background: var(--accent); position: absolute; top: 0; animation: scan 2.5s infinite; box-shadow: 0 0 30px var(--accent); }
+        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
 
-        @keyframes bgShift {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(20px); }
-        }
-        
-        .q-box { 
-            max-width: 900px; 
-            width: 90%; 
-            text-align: center;
-            position: relative;
-            z-index: 2;
-            animation: slideUp 0.6s ease;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .prog-label { 
-            color: var(--accent); 
-            font-weight: 800; 
-            font-size: 0.85rem; 
-            letter-spacing: 0.3em; 
-            margin-bottom: 1.5rem; 
-            display: block;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        .progress-bar { 
-            width: 100%; 
-            height: 3px; 
-            background: rgba(255,255,255,0.05); 
-            margin-bottom: 5rem; 
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-bar::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
-            animation: shimmer 2s ease-in-out infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(200%); }
-        }
-        
-        .progress-fill { 
-            height: 100%; 
-            background: linear-gradient(90deg, var(--accent), #a78bfa); 
-            transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            width: 0%;
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
-        
-        .q-text { 
-            font-size: clamp(1.5rem, 5vw, 2.8rem); 
-            font-weight: 900; 
-            margin-bottom: 5rem; 
-            line-height: 1.3; 
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: textGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes textGlow {
-            0%, 100% { filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3)); }
-            50% { filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.5)); }
-        }
-        
-        .ans-btn { 
-            padding: 2rem 2.5rem; 
-            background: var(--glass); 
-            border: 1px solid var(--border); 
-            color: var(--text-primary); 
-            border-radius: 20px; 
-            font-size: 1.15rem; 
-            font-weight: 600; 
-            cursor: pointer; 
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            width: 100%; 
-            margin-bottom: 1.5rem;
-            position: relative;
-            overflow: hidden;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .ans-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--accent), #a78bfa);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .ans-btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-        
-        .ans-btn:hover::before {
-            opacity: 1;
-        }
-
-        .ans-btn:hover::after {
-            transform: translateX(100%);
-        }
-
-        .ans-btn:hover { 
-            transform: translateY(-5px) scale(1.02);
-            border-color: var(--accent);
-            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.4);
-        }
-
-        .ans-btn span {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* SCANNER */
-        #scanner-view { 
-            display: none; 
-            position: fixed; 
-            inset: 0; 
-            background: #000000; 
-            z-index: 2000; 
-            align-items: center; 
-            justify-content: center; 
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .scanner-grid {
-            position: absolute;
-            inset: 0;
-            background-image: 
-                repeating-linear-gradient(0deg, transparent, transparent 50px, rgba(139, 92, 246, 0.03) 50px, rgba(139, 92, 246, 0.03) 51px),
-                repeating-linear-gradient(90deg, transparent, transparent 50px, rgba(139, 92, 246, 0.03) 50px, rgba(139, 92, 246, 0.03) 51px);
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-        
-        .scan-line { 
-            width: 100%; 
-            height: 3px; 
-            background: linear-gradient(90deg, transparent, var(--accent), transparent); 
-            position: absolute; 
-            top: 0; 
-            animation: scan 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
-            box-shadow: 
-                0 0 30px var(--accent),
-                0 0 60px var(--accent),
-                0 0 90px rgba(139, 92, 246, 0.3);
-        }
-        
-        @keyframes scan { 
-            0% { top: 0%; opacity: 0; } 
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 100%; opacity: 0; } 
-        }
-
-        .scanner-text {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            letter-spacing: 0.5em; 
-            font-weight: 300; 
-            color: var(--accent); 
-            text-align: center;
-            position: relative;
-            z-index: 10;
-            animation: textFlicker 2s ease-in-out infinite;
-        }
-
-        @keyframes textFlicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        .scanner-subtitle {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            letter-spacing: 0.2em;
-            font-weight: 300;
-        }
-
-        .scanner-dna {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 50%;
-            animation: rotateDNA 10s linear infinite;
-        }
-
-        .scanner-dna::before,
-        .scanner-dna::after {
-            content: '';
-            position: absolute;
-            inset: 20px;
-            border: 1px solid rgba(139, 92, 246, 0.1);
-            border-radius: 50%;
-        }
-
-        .scanner-dna::after {
-            inset: 40px;
-        }
-
-        @keyframes rotateDNA {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* RESULTS */
-        .res-main { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            background: var(--glass); 
-            padding: 4rem; 
-            border-radius: 32px; 
-            gap: 4rem; 
-            border: 1px solid var(--border);
-            backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 1s ease;
-        }
-
-        .res-main::before {
-            content: '';
-            position: absolute;
-            inset: -100%;
-            background: conic-gradient(from 0deg, transparent, var(--accent-glow), transparent);
-            animation: rotate 10s linear infinite;
-            opacity: 0.3;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .res-main > * {
-            position: relative;
-            z-index: 1;
-        }
-        
-        @media (min-width: 768px) { 
-            .res-main { 
-                flex-direction: row; 
-                text-align: left; 
-                padding: 6rem; 
-            } 
-        }
-        
-        .book-img { 
-            width: 240px; 
-            border-radius: 16px; 
-            box-shadow: 
-                0 50px 100px rgba(0,0,0,0.9),
-                0 0 0 1px rgba(255,255,255,0.1); 
-            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .book-img:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 
-                0 60px 120px rgba(0,0,0,0.9),
-                0 0 60px var(--accent-glow);
-        }
-        
-        .goodreads-btn, .amazon-btn { 
-            display: inline-block; 
-            background: linear-gradient(135deg, #553A28 0%, #372213 100%); 
-            color: #fff; 
-            padding: 1.5rem 3.5rem; 
-            border-radius: 16px; 
-            font-weight: 800; 
-            text-decoration: none; 
-            margin: 1rem 0.5rem; 
-            letter-spacing: 0.15em; 
-            transition: all 0.4s ease;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .amazon-btn {
-            background: linear-gradient(135deg, #FF9900 0%, #FFB84D 100%);
-            color: #000;
-        }
-
-        .goodreads-btn::before, .amazon-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, #7A5539, #553A28);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .amazon-btn::before {
-            background: linear-gradient(135deg, #FFB84D, #FF9900);
-        }
-
-        .goodreads-btn:hover::before, .amazon-btn:hover::before {
-            opacity: 1;
-        }
-
-        .goodreads-btn:hover, .amazon-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(55, 34, 19, 0.6);
-        }
-
-        .goodreads-btn span, .amazon-btn span {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* SECTION TITLES */
-        .section-title {
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-align: center;
-            letter-spacing: 0.4em;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            margin: 8rem 0 4rem;
-            position: relative;
-        }
-
-        .section-title::before,
-        .section-title::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 100px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
-        }
-
-        .section-title::before {
-            right: calc(100% + 2rem);
-        }
-
-        .section-title::after {
-            left: calc(100% + 2rem);
-        }
-
-        /* BACK BUTTON */
-        .back-btn {
-            position: fixed;
-            top: 2rem;
-            left: 2rem;
-            padding: 1rem 2rem;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 100;
-            font-size: 0.9rem;
-            letter-spacing: 0.05em;
-        }
-
-        .back-btn:hover {
-            background: var(--glass-hover);
-            border-color: var(--accent);
-            transform: translateX(-5px);
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .container { padding: 3rem 1.5rem; }
-            .hero { margin-bottom: 5rem; }
-            .hero-title { font-size: 3rem; }
-            .hero-desc { font-size: 1.1rem; }
-            .genre-grid { gap: 3rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-            .char-img { height: 280px; }
-            .bubble { width: 240px; font-size: 0.8rem; padding: 1rem 1.5rem; }
-            .q-text { font-size: 1.5rem; margin-bottom: 3rem; }
-            .ans-btn { padding: 1.5rem 2rem; font-size: 1rem; }
-            .res-main { padding: 2.5rem; gap: 2.5rem; }
-            .scanner-text { font-size: 1.1rem; }
-            .section-title::before, .section-title::after { width: 50px; }
-            .goodreads-btn, .amazon-btn { padding: 1.2rem 2rem; font-size: 0.8rem; display: block; margin: 0.5rem 0; }
-        }
-
-        /* UTILITY ANIMATIONS */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .res-main { display: flex; flex-direction: column; align-items: center; gap: 4rem; background: var(--glass); padding: 3rem; border-radius: 32px; border: 1px solid var(--border); }
+        @media (min-width: 768px) { .res-main { flex-direction: row; text-align: left; padding: 5rem; } }
+        .book-img { width: 220px; border-radius: 12px; box-shadow: 0 40px 80px #000; transition: 0.5s; }
+        .book-img:hover { transform: scale(1.05) rotate(2deg); }
+        .goodreads-btn { display: inline-block; background: #372213; color: #fff; padding: 1.5rem 3rem; border-radius: 16px; font-weight: 800; text-decoration: none; margin-top: 2rem; letter-spacing: 0.1em; }
     </style>
 </head>
 <body>
-    <!-- PARTICLES BACKGROUND -->
+    <div id="loader"><div class="loader-logo">STORYSKIN</div></div>
     <div id="particles-js"></div>
-    
-    <!-- CONSTELLATIONS CANVAS -->
     <canvas id="constellations"></canvas>
 
-    <!-- LOADER -->
-    <div id="loader">
-        <div class="loader-content">
-            <div class="loader-logo">STORYSKIN</div>
-            <div class="loader-bar">
-                <div class="loader-progress"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- HOME VIEW -->
-    <div class="container" id="home-view" style="display:none;">
+    <div id="home-view" class="container">
         <div class="hero">
-            <div class="hero-badge">ADN Literario</div>
             <h1 class="hero-title">STORYSKIN</h1>
-            <p class="hero-desc">Tu próximo yo está esperando en alguna página.</p>
+            <p style="color: #888; font-size: 1.1rem; margin-top: 2rem;">¿Quién quieres ser hoy? Elige una piel y sobrevive al interrogatorio.</p>
         </div>
-        <div id="grid" class="genre-grid"></div>
+        <div class="grid" id="grid"></div>
     </div>
 
-    <!-- QUIZ VIEW -->
     <div id="quiz-view">
-        <div class="quiz-bg-effect"></div>
-        <button class="back-btn" onclick="backHome()">← Volver</button>
         <div class="q-box">
             <span class="prog-label" id="prog-label">PREGUNTA 1 / 10</span>
             <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-            <div id="q-text" class="q-text"></div>
+            <h2 class="q-text" id="q-text"></h2>
             <div id="options"></div>
         </div>
     </div>
 
-    <!-- SCANNER VIEW -->
     <div id="scanner-view">
-        <div class="scanner-grid"></div>
-        <div class="scanner-dna"></div>
         <div class="scan-line"></div>
-        <h2 class="scanner-text">ANALIZANDO</h2>
-        <p class="scanner-subtitle">Procesando tu ADN literario...</p>
+        <h2 style="letter-spacing: 0.5em; color: var(--accent); font-family: 'Space Grotesk';">ANALIZANDO ADN LITERARIO</h2>
     </div>
 
-    <!-- RESULTS VIEW -->
     <div id="res-view" class="container" style="display:none;">
-        <button class="back-btn" onclick="location.reload()">← Nueva búsqueda</button>
         <div id="res-data" class="res-main"></div>
-        
-        <h3 class="section-title">Otros destinos para ti</h3>
-        <div id="res-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 3rem;"></div>
-        
-        <center>
-            <button onclick="location.reload()" class="ans-btn" style="margin-top: 8rem; max-width: 400px; background: transparent; border-color: var(--border); color: var(--text-secondary);">
-                <span>EXPLORAR OTROS GÉNEROS</span>
-            </button>
-        </center>
+        <div id="res-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; margin-top: 5rem;"></div>
+        <center><button onclick="location.reload()" class="ans-btn" style="margin-top: 8rem; max-width: 400px; text-align: center;">EXPLORAR OTRA PIEL</button></center>
     </div>
 
     <script>
-        // DATA CON MÚLTIPLES FRASES POR PERSONAJE
         const data = {
-            fantasy: { 
-                name: "Fantasía", 
-                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/1f494qll-removebg-preview.png", 
-                phrases: [
-                    "¿Listo para mancharte de sangre en un mundo que ni existe?",
-                    "Los dragones no son lo único que escupe fuego aquí.",
-                    "La magia siempre tiene un precio. ¿Estás dispuesto a pagarlo?"
-                ],
-                q: [
-                    {q:"¿Buscas un lío rápido de una tarde o estás lista para casarte con una saga de 10 tomos?", a:"Aventura flash sin ataduras", b:"Ponme el anillo, quiero vivir ahí años"},
-                    {q:"¿Magia de purpurina y varitas de estrella o rituales oscuros que piden sacrificios?", a:"Dame polvos de hada", b:"Si no hay sangre, no es magia de verdad"},
-                    {q:"¿Dragones clásicos que escupen fuego o bichos tan raros que dudarás de tu cordura?", a:"Lo de siempre mola", b:"Dame algo bizarro que me perturbe"},
-                    {q:"¿Final feliz donde todos comen perdices o tragedia cruel donde mueren hasta los extras?", a:"Luz, esperanza y amor", b:"Que no quede vivo ni el apuntador"},
-                    {q:"¿El 'elegido' perfecto por el destino o un antihéroe cínico con problemas de ira?", a:"Héroe de manual", b:"Un canalla que solo pasaba por allí"},
-                    {q:"¿Misiones épicas de salvar el mundo o un buen robo a la cámara del tesoro real?", a:"Es mi deber salvar el mundo", b:"Robaré el tesoro y huiré riendo"},
-                    {q:"¿Caballeros medievales llenos de barro o elfos con Instagram y wifi?", a:"Edad Media pura", b:"Fantasía urbana moderna"},
-                    {q:"¿Sistemas de magia sencillos o física cuántica con varitas que necesita manual?", a:"Algo que no me fría el cerebro", b:"Necesito reglas profundas y complejas"},
-                    {q:"¿Intrigas políticas de pasillo o espadazos directos en mitad del barro?", a:"Veneno en la copa y mente fría", b:"Acero chocando contra acero"},
-                    {q:"¿Lealtad incondicional hasta la tumba o una puñalada trapera de tu mejor amigo?", a:"Fiel hasta el fin", b:"Traición, así es más emocionante"}
+            fantasy: { name: "Fantasía", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/1f494qll-removebg-preview.png", bubble: "¿Listo para mancharte de sangre en un mundo que ni existe?", q: [
+                {q:"¿Buscas un lío rápido de una tarde o estás lista para casarte con una saga de 10 tomos?", a:"Dame un flash sin ataduras", b:"Ponme el anillo, quiero vivir ahí años"},
+                {q:"¿Magia de purpurina o rituales oscuros que requieren sacrificios humanos?", a:"Polvos de hada, por favor", b:"Si no hay sangre, no es magia real"},
+                {q:"¿Dragones clásicos o criaturas tan bizarras que te harán dudar de tu cordura?", a:"Lo de siempre mola", b:"Dame algo raro que me perturbe"},
+                {q:"¿Castillos de barro medieval o una ciudad moderna donde los orcos usan Instagram?", a:"Caballeros y barro puro", b:"Orcos con wifi y café de especialidad"},
+                {q:"¿Final feliz donde todos comen perdices o tragedia cruel donde mueren hasta los extras?", a:"Luz, esperanza y amor", b:"Que no quede vivo ni el apuntador"},
+                {q:"¿El 'elegido' perfecto por el destino o un antihéroe cínico con problemas de ira?", a:"Héroe de manual", b:"Un canalla que solo pasaba por allí"},
+                {q:"¿Magia sencilla de entender o física cuántica con varitas que necesita un manual?", a:"No me frías el cerebro", b:"Necesito reglas profundas y complejas"},
+                {q:"¿Salvar el mundo por honor o un buen robo a la cámara del tesoro real?", a:"Es mi deber salvar el mundo", b:"Robaré el oro y huiré riendo"},
+                {q:"¿Intrigas políticas de pasillo o espadazos directos en mitad del campo de batalla?", a:"Veneno en la copa y mente fría", b:"Acero chocando contra acero"},
+                {q:"¿Lealtad incondicional hasta la tumba o una puñalada trapera de tu mejor amigo?", a:"Fiel hasta el fin", b:"Traición, así es más emocionante"}
             ]},
-            thriller: { 
-                name: "Thriller", 
-                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/d7nt4mr2-removebg-preview.png", 
-                phrases: [
-                    "¿Crees que eres más lista que el asesino? Ten cuidado.",
-                    "El criminal siempre vuelve a la escena del crimen.",
-                    "La verdad está en los detalles que nadie más ve."
-                ],
-                q: [
-                {q:"¿Asesinato elegante con té en una mansión o escena macabra que requiere mucha fregona?", a:"Té estilo Agatha Christie", b:"Dame sangre y forenses sudando"},
+            thriller: { name: "Thriller", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/d7nt4mr2-removebg-preview.png", bubble: "¿Crees que eres más lista que el asesino? Ten cuidado, suelo ganar yo.", q: [
+                {q:"¿Asesinato elegante con té en una mansión o una escena macabra que requiere mucha fregona?", a:"Té estilo Agatha Christie", b:"Dame sangre y forenses sudando"},
                 {q:"¿Detective bueno y recto o meterte directamente en la mente del psicópata?", a:"Justicia y ley ante todo", b:"Quiero saber por qué mata"},
-                {q:"¿Pistas para ir resolviendo o un giro final que te deje mirando a la pared?", a:"Quiero adivinarlo yo sola", b:"Quiero que el final me destruya"},
-                {q:"¿Ritmo pausado para pensar con calma o persecución a 200km/h por la ciudad?", a:"Mente fría y lupa en mano", b:"Adrenalina pura y sin frenos"},
+                {q:"¿Ritmo pausado para pensar con calma o una persecución a 200km/h por la ciudad?", a:"Mente fría y lupa en mano", b:"Adrenalina pura y sin frenos"},
+                {q:"¿Pistas para ir resolviendo o un giro final que te deje mirando a la pared 20 minutos?", a:"Quiero adivinarlo yo sola", b:"Quiero que el final me deje en shock"},
                 {q:"¿Realismo forense impecable o una conspiración global de los Illuminati?", a:"ADN y hechos reales", b:"Teorías locas y caos mundial"},
-                {q:"¿Pueblo pequeño donde todos mienten o metrópolis podrida hasta el núcleo?", a:"Secretos rurales bajo la alfombra", b:"Corrupción salvaje en la gran ciudad"},
-                {q:"¿Justicia poética al final o los malos se escapan con el botín?", a:"El bien debe ganar", b:"A veces el mal es más listo"},
-                {q:"¿Tensión psicológica que te pone los pelos de punta o acción de gatillo fácil?", a:"Cerebral y asfixiante", b:"Balas y explosiones, dame marcha"},
+                {q:"¿Un pueblo pequeño donde todos mienten o metrópolis podrida hasta el núcleo?", a:"Secretos rurales bajo la alfombra", b:"Corrupción salvaje en la ciudad"},
+                {q:"¿Justicia poética al final o los malos se escapan con el botín y se ríen de ti?", a:"El bien siempre gana", b:"A veces el mal es más listo"},
+                {q:"¿Tensión psicológica que te pone los pelos de punta o acción desenfrenada?", a:"Asfixiante y cerebral", b:"Balas y explosiones, dame marcha"},
                 {q:"¿Lógica pura donde todo encaja o un toque paranormal que no puedes explicar?", a:"Realismo puro y duro", b:"Algo huele raro... y no es humano"},
                 {q:"¿Detective brillante pero atormentado o persona normal en un marrón gigante?", a:"Un genio tipo Sherlock", b:"Alguien normal sufriendo mucho"}
             ]},
-            erotica: { 
-                name: "Erótica", 
-                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/ehznlag1-removebg-preview.png", 
-                phrases: [
-                    "¿Sabías que soy el placer culpable que mantiene la industria?",
-                    "La tensión sexual no se resuelve sola.",
-                    "Algunas páginas se leen mejor a solas y con la puerta cerrada."
-                ],
-                q: [
-                {q:"¿Tensión sexual que tarda 300 páginas o incendio total desde el capítulo uno?", a:"Un roce sutil que quema lento", b:"Fuego total inmediato"},
+            erotica: { name: "Erótica", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/ehznlag1-removebg-preview.png", bubble: "¿Sabías que soy el placer culpable que mantiene viva a la industria?", q: [
+                {q:"¿Tensión sexual que tarda 300 páginas o incendio total desde el capítulo uno?", a:"Un roce sutil que me queme lento", b:"Fuego total inmediato"},
                 {q:"¿Enemigos mortales que acaban amándose o compartir una cama por fuerza mayor?", a:"Del odio al amor hay un paso", b:"Ups... solo queda una cama libre"},
                 {q:"¿Amor verdadero de los que duelen o deseo físico puro sin ninguna pregunta?", a:"Corazón y sentimientos", b:"Piel con piel, sin nombres"},
                 {q:"¿Un romance 'cuqui' para sonreír o algo oscuro, prohibido y peligroso?", a:"Dulce, tierno y romántico", b:"Oscuro, sucio y pecaminoso"},
-                {q:"¿Millonario excéntrico en un ático o el vecino que te arregla el grifo?", a:"Dame lujo y excentricidad", b:"Prefiero lo cercano y real"},
-                {q:"¿Tensión en la oficina con el jefe o mordiscos en mundos de fantasía?", a:"Pasión entre archivadores", b:"Amores de otro mundo"},
+                {q:"¿Millonario excéntrico en un ático o el vecino del lado que te arregla el grifo?", a:"Dame lujo y excentricidad", b:"Prefiero lo cercano y real"},
+                {q:"¿Pasión prohibida en la oficina o mordiscos en mundos de fantasía?", a:"Pasión entre archivadores", b:"Amores de otro mundo"},
                 {q:"¿Malentendidos ridículos que dan risa o secretos inconfesables del pasado?", a:"Comedia picante para reír", b:"Sombras que ocultan la verdad"},
-                {q:"¿Final feliz garantizado o realismo crudo que te rompa el alma?", a:"Vivan los finales felices", b:"La vida es dura, el amor también"},
+                {q:"¿Final feliz garantizado con boda o realismo crudo que te rompa el alma?", a:"Vivan las bodas y finales", b:"La vida es dura, el amor también"},
                 {q:"¿Juegos de poder y dominación o una conexión tierna al mismo nivel?", a:"Me gusta que manden", b:"Igualdad absoluta y cariño"},
                 {q:"¿Mariposas constantes en el estómago o un incendio que arrase con todo?", a:"Dulce, tierno y joven", b:"Brasas ardientes hasta el final"}
             ]},
-            horror: { 
-                name: "Terror", 
-                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/ztyecjla-removebg-preview.png", 
-                phrases: [
-                    "¿Te atreves a mirar debajo de la cama? Yo estoy ahí.",
-                    "El verdadero terror no hace ruido. Solo espera.",
-                    "Cada página que pasas me acerco un poco más."
-                ],
-                q: [
+            horror: { name: "Terror", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/ztyecjla-removebg-preview.png", bubble: "¿Te atreves a mirar debajo de la cama? Yo estoy ahí.", q: [
                 {q:"¿Quieres poder dormir hoy o prefieres que el armario te dé un infarto?", a:"Quiero dormir un poco", b:"Cero sueño, dame pesadillas"},
                 {q:"¿Fantasmas invisibles del más allá o humanos locos peores que Satán?", a:"Espíritus y entidades", b:"La gente está fatal de la cabeza"},
                 {q:"¿Claustrofobia total dentro de casa o un bosque oscuro donde te acechan?", a:"No puedo salir de aquí", b:"No deberías haber entrado ahí"},
                 {q:"¿Gore desatado con mucha sangre o terror psicológico asfixiante?", a:"Vísceras y carnicería", b:"Miedo mental constante"},
                 {q:"¿Un susto cada cinco minutos o una tensión lenta que no para de crecer?", a:"Jumpscares constantes", b:"Malestar lento y asfixiante"},
-                {q:"¿Un héroe que sobrevive milagrosamente o la certeza de que moriréis todos?", a:"Tengo fe en la supervivencia", b:"Muerte total, que gane el mal"},
+                {q:"¿Un héroe que sobrevive o la certeza de que moriréis todos de forma horrible?", a:"Tengo fe en la supervivencia", b:"Muerte total, que gane el mal"},
                 {q:"¿Vas a mirar debajo de la cama esta noche solo por si acaso?", a:"No, paso de rollos", b:"Tengo que comprobarlo o no duermo"},
-                {q:"¿Terror íntimo en una habitación cerrada o un apocalipsis zombi global?", a:"Terror personal e íntimo", b:"El fin del mundo ha llegado"},
+                {q:"¿Terror íntimo en una habitación o un apocalipsis zombi global?", a:"Terror personal e íntimo", b:"El fin del mundo ha llegado"},
                 {q:"¿Clásicos de payasos diabólicos o pesadillas digitales tipo Black Mirror?", a:"Lo clásico siempre asusta", b:"La tecnología nos va a matar"},
-                {q:"¿Alguien que planta cara o una víctima que corre fatal y se tropieza?", a:"Luchador nato", b:"Víctima indefensa, qué pena"}
+                {q:"¿Alguien que planta cara o una víctima que corre fatal y se tropieza siempre?", a:"Luchador nato", b:"Víctima indefensa, qué pena"}
             ]},
-            scifi: { 
-                name: "Sci-Fi", 
-                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/pngtree-d-render-of-a-female-game-character-set-in-cyberpunk-universe-png-image_16355028-removebg-preview.png", 
-                phrases: [
-                    "Hackea tu propio destino. La realidad aburre.",
-                    "El futuro ya está aquí. Solo que muy mal repartido.",
-                    "¿Y si te dijera que ya vivimos en una simulación?"
-                ],
-                q: [
-                {q:"¿Estamos solos en el universo o somos el chiste de la galaxia?", a:"Nadie nos oye gritar fuera", b:"Contacto inminente con aliens"},
-                {q:"¿Naves espaciales brillantes o una ciudad cyberpunk con lluvia?", a:"Exploración espacial pura", b:"Implantes, hackers y neón"},
-                {q:"¿IA maja que te ayuda a pilotar o sistema que ha decidido borrarnos?", a:"Mi IA es mi mejor amiga", b:"Skynet tiene razón, fuera humanos"},
+            scifi: { name: "Sci-Fi", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/pngtree-d-render-of-a-female-game-character-set-in-cyberpunk-universe-png-image_16355028-removebg-preview.png", bubble: "Hackea tu propio destino. La realidad aburre.", q: [
+                {q:"¿Estamos solos en el universo o somos simplemente el chiste de la galaxia?", a:"Nadie nos oye gritar fuera", b:"Contacto alien inminente"},
+                {q:"¿Naves espaciales brillantes o una ciudad cyberpunk con neón?", a:"Exploración espacial pura", b:"Implantes, hackers y asfalto"},
+                {q:"¿Una IA maja que te ayuda a pilotar o sistema que ha decidido borrarnos?", a:"Mi IA es mi mejor amiga", b:"Skynet tiene razón, fuera humanos"},
                 {q:"¿Un futuro brillante donde todo funciona o distopía donde el aire es de pago?", a:"Utopía limpia y perfecta", b:"El futuro es una mierda oscura"},
                 {q:"¿Chip en el cerebro y más máquina que humano o naturaleza evolucionada?", a:"Más metal, por favor", b:"Bio-evolución pura"},
-                {q:"¿Aventura palomitera de naves o ciencia que necesita Wikipedia?", a:"Diversión y láseres", b:"Ciencia dura, explícame la física"},
-                {q:"¿Viajar al pasado para liarla o saltar dentro de 5000 años?", a:"Quiero arreglar mis errores", b:"Quiero ver el fin de todo"},
+                {q:"¿Aventura palomitera de naves o ciencia que necesita Wikipedia?", a:"Diversión y láseres", b:"Explícame la física"},
+                {q:"¿Viajar al pasado para liarla o saltar dentro de 5000 años?", a:"Quiero arreglar errores", b:"Quiero ver el fin de todo"},
                 {q:"¿Magia disfrazada de naves o física cuántica real que duele?", a:"Star Wars es mi religión", b:"Interstellar me parece básica"},
                 {q:"¿Explorar planetas extraños o vivir en una estación espacial enana?", a:"Viajar por el cosmos", b:"Claustrofobia en la órbita"},
                 {q:"¿Un final con esperanza o un vacío existencial profundo?", a:"Hay esperanza", b:"Somos un error de software"}
             ]},
-            comingofage: { 
-                name: "Coming of Age", 
-                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/pa646132-removebg-preview.png", 
-                phrases: [
-                    "Recuerda cuando todo dolía demasiado.",
-                    "Crecer duele más que cualquier rodilla raspada.",
-                    "El primer beso, el primer desamor. Todo estaba por descubrir."
-                ],
-                q: [
-                {q:"¿Dramas en el instituto o crisis existencial en la universidad?", a:"Taquillas y primer amor", b:"¿Qué hago con mi vida?"},
-                {q:"¿Un primer amor con mariposas locas o un desengaño crudo?", a:"Dame ese primer beso", b:"Rómpeme el corazón, quiero sentir"},
-                {q:"¿Intentar encajar en el grupo o ser el bicho raro con orgullo?", a:"Quiero ser normal", b:"Ser raro es mi superpoder"},
-                {q:"¿Aceptar la madurez con sonrisa o ser una Peter Pan eterna?", a:"Cuidado, que me hago adulta", b:"Crecer es una trampa mortal"},
-                {q:"¿Final con esperanza o una despedida melancólica?", a:"Todo saldrá bien", b:"Fue bonito mientras duró"},
+            comingofage: { name: "Coming of Age", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/pa646132-removebg-preview.png", bubble: "Cuando todo dolía demasiado y todo era posible.", q: [
+                {q:"¿Dramas intensos en el instituto o crisis existencial en la universidad?", a:"Taquillas y primer amor", b:"¿Qué hago con mi vida?"},
+                {q:"¿Un primer amor con mariposas locas o un desengaño crudo que te rompa?", a:"Dame ese primer beso", b:"Rómpeme el corazón, quiero sentir"},
+                {q:"¿Intentar encajar en el grupo a toda costa o ser el bicho raro con orgullo?", a:"Quiero ser normal", b:"Ser raro es mi superpoder"},
+                {q:"¿Aceptar la madurez con una sonrisa o ser una Peter Pan eterna?", a:"Cuidado, que me hago adulta", b:"Crecer es una trampa mortal"},
+                {q:"¿Final con un rayo de esperanza o una despedida melancólica?", a:"Todo saldrá bien", b:"Fue bonito mientras duró"},
                 {q:"¿Nostalgia dulce de veranos o caos rebelde adolescente?", a:"Bicicletas y atardeceres", b:"Música alta y gritos al mundo"},
-                {q:"¿Grupo de amigos contra el mundo o viaje solitario?", a:"Los amigos son familia", b:"Necesito encontrarme a solas"},
-                {q:"¿Hogar dulce hogar o necesidad urgente de escapar?", a:"Mi sitio está aquí", b:"Carretera y manta, adiós"},
-                {q:"¿Poeta de diario secreto o gamberra con corazón?", a:"Escribo lo que siento", b:"Actúo y luego pregunto"},
-                {q:"¿Secretos en barrio pequeño o luces de la gran ciudad?", a:"Todos se conocen aquí", b:"Quiero perderme en la multitud"}
+                {q:"¿Un grupo de amigos inseparables o un viaje solitario de autodescubrimiento?", a:"Los amigos son familia", b:"Necesito encontrarme a solas"},
+                {q:"¿Hogar dulce hogar o la necesidad urgente de escapar de casa?", a:"Mi sitio está aquí", b:"Carretera y manta, adiós"},
+                {q:"¿Poeta de diario secreto o gamberra con mucho corazón?", a:"Escribo lo que siento", b:"Actúo y luego pregunto"},
+                {q:"¿Secretos en barrio pequeño o luces cegadoras de la gran ciudad?", a:"Todos se conocen aquí", b:"Quiero perderme en la multitud"}
             ]},
-            contemporary: { 
-                name: "Contemporáneo", 
-                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/9e7625v9-removebg-preview.png", 
-                phrases: [
-                    "Tu vida podría ser este libro perfectamente.",
-                    "Los lunes existen también en la ficción.",
-                    "A veces la vida real es más extraña que cualquier novela."
-                ],
-                q: [
-                {q:"¿Un lunes cualquiera o una historia de superación épica?", a:"Realismo cotidiano", b:"Ver a alguien triunfar"},
-                {q:"¿Humor ácido y sarcasmo o reflexión profunda sobre la vida?", a:"Risas para no llorar", b:"Cerebro y alma en juego"},
-                {q:"¿Ritmo del asfalto o calma de un retiro en el campo?", a:"Ciudad que nunca duerme", b:"Aire puro y paz mental"},
-                {q:"¿Realismo sucio sin filtros o historias 'feel-good'?", a:"Dime la verdad pura", b:"Necesito un abrazo literario"},
-                {q:"¿Un final abierto o todo bien atado y resuelto?", a:"Tú decides el final", b:"Dame respuestas, por favor"},
+            contemporary: { name: "Contemporáneo", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/9e7625v9-removebg-preview.png", bubble: "Tu vida no es una película, pero podría ser este libro perfectamente.", q: [
+                {q:"¿Un lunes por la mañana cualquiera o una historia de superación épica?", a:"Realismo cotidiano", b:"Ver a alguien triunfar"},
+                {q:"¿Humor ácido y sarcasmo contra el mundo o reflexión profunda?", a:"Risas para no llorar", b:"Cerebro y alma en juego"},
+                {q:"¿Ritmo del asfalto o la calma de un retiro en el campo?", a:"Ciudad que nunca duerme", b:"Aire puro y paz mental"},
+                {q:"¿Realismo sucio y sin filtros o historias 'feel-good' que reconfortan?", a:"Dime la verdad pura", b:"Necesito un abrazo literario"},
+                {q:"¿Un final abierto como la vida misma o todo bien atado y resuelto?", a:"Tú decides el final", b:"Dame respuestas, por favor"},
                 {q:"¿Dramas familiares de siempre o competencia feroz en el curro?", a:"Cenas de Navidad tensas", b:"Tiburones en la oficina"},
-                {q:"¿Un romance inesperado o la cruda rutina diaria?", a:"El amor lo cura todo", b:"La vida es lo que pasa hoy"},
+                {q:"¿Un romance inesperado o la cruda rutina diaria?", a:"El amor lo cura todo", b:"La vida es hoy"},
                 {q:"¿Un cambio radical de vida o la paz de lo ya conocido?", a:"Mándalo todo a paseo", b:"Me gusta mi zona de confort"},
-                {q:"¿Temas sociales del mundo o conflictos de tu propia mente?", a:"Cambiemos el mundo", b:"Cambiemos mi interior"},
+                {q:"¿Temas sociales del mundo o conflictos internos de tu mente?", a:"Cambiemos el mundo", b:"Cambiemos mi interior"},
                 {q:"¿Éxito, luces y fama o una paz invisible secreta?", a:"Brillaré ante todos", b:"Mi felicidad es secreta"}
             ]},
-            historical: { 
-                name: "Histórica", 
-                img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/lkl3ol1e-removebg-preview.png", 
-                phrases: [
-                    "El ayer es un país extraño. ¿Te vienes?",
-                    "La historia la escriben los vencedores. Pero yo conozco otra versión.",
-                    "Cada época tiene sus propios fantasmas."
-                ],
-                q: [
-                {q:"¿Té en salones ingleses o brutalidad en las trincheras?", a:"Elegancia victoriana", b:"Barro, sangre y cañones"},
-                {q:"¿Clase de historia real o una aventura de espada?", a:"Quiero el dato real", b:"Acción y romance de época"},
-                {q:"¿Lujo extremo de la corte o dureza salvaje del Oeste?", a:"Pelucas y seda", b:"Polvo, revólver y caballos"},
-                {q:"¿Un secreto del pasado o el día a día cotidiano?", a:"Misterios enterrados", b:"Vida normal hace siglos"},
-                {q:"¿Ayer puro o una conexión directa con el presente?", a:"Ayer fue ayer", b:"La historia se repite hoy"},
-                {q:"¿Intrigas políticas secretas o batallas que cambian mapas?", a:"Veneno en la copa", b:"Cargas de caballería"},
-                {q:"¿Personajes reales o gente normal viviendo hitos?", a:"Quiero conocer al Rey", b:"Dime cómo vivía el pueblo"},
-                {q:"¿Clases sociales insalvables o honor por la patria?", a:"Amor prohibido", b:"Moriré por mi bandera"},
+            historical: { name: "Histórica", img: "https://taniadeazevedo.es/wp-content/uploads/2026/02/lkl3ol1e-removebg-preview.png", bubble: "El ayer es un país muy extraño. ¿Te vienes de visita?", q: [
+                {q:"¿Té en salones ingleses o la brutalidad de las trincheras de guerra?", a:"Elegancia victoriana", b:"Barro, sangre y cañones"},
+                {q:"¿Una clase de historia real o aventura de capa y espada?", a:"Quiero el dato real", b:"Acción y romance de época"},
+                {q:"¿Intrigas políticas secretas o batallas épicas que cambian mapas?", a:"Veneno y secretos", b:"Cargas de caballería"},
+                {q:"¿Personajes históricos reales o gente normal viviendo hitos?", a:"Quiero conocer al Rey", b:"Dime cómo vivía el pueblo"},
+                {q:"¿Diferencias de clase social o el honor de luchar por la patria?", a:"Amor prohibido por dinero", b:"Moriré por mi bandera"},
+                {q:"¿Lujo extremo de la corte o dureza salvaje del Oeste?", a:"Pelucas, seda y espejos", b:"Polvo, revólver y caballos"},
                 {q:"¿Rigor histórico impecable o una buena mentira novelada?", a:"No me mientas fechas", b:"Si la historia es buena, vale"},
-                {q:"¿Arte, cultura y pinceles o estrategia militar y poder?", a:"Belleza y pensamiento", b:"Conquista y mando"}
+                {q:"¿Un secreto del pasado o el día a día cotidiano de la época?", a:"Misterios enterrados", b:"Vida normal hace siglos"},
+                {q:"¿Arte, cultura y pinceles o estrategia militar y poder puro?", a:"Belleza y pensamiento", b:"Conquista y mando"},
+                {q:"¿Una época cerrada o una conexión directa con el presente?", a:"Ayer fue ayer", b:"La historia se repite hoy"}
             ]}
         };
 
-        // STATE
-        let currentGenre = null;
-        let currentQ = 0;
-        let phraseIndex = 0;
+        let currentGenre = null, currentQ = 0;
 
-        // TYPING EFFECT
-        function typeWriter(element, text, speed = 50) {
-            let i = 0;
-            element.innerHTML = '<span class="bubble-text"></span><span class="typing-cursor"></span>';
-            const textSpan = element.querySelector('.bubble-text');
-            
-            function type() {
-                if (i < text.length) {
-                    textSpan.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                } else {
-                    setTimeout(() => {
-                        element.querySelector('.typing-cursor').remove();
-                    }, 500);
-                }
+        function init() {
+            initParticles();
+            initConstellations();
+            setTimeout(() => { document.getElementById('loader').classList.add('hide'); }, 1500);
+            const grid = document.getElementById('grid');
+            for (const [key, val] of Object.entries(data)) {
+                grid.innerHTML += `<div class="card" onclick="toggleBubble(this)">
+                    <div class="bubble">${val.bubble}</div>
+                    <img src="${val.img}" class="char-img">
+                    <div class="genre-name" onclick="startQuiz(event, '${key}')">${val.name}<span class="arrow-hint">→</span></div>
+                </div>`;
             }
-            type();
         }
 
-        // CREATE MAGIC PARTICLES
-        function createMagicParticles(card) {
-            const container = document.createElement('div');
-            container.className = 'magic-particles';
-            
-            for (let i = 0; i < 15; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 3 + 's';
-                particle.style.animationDuration = (2 + Math.random() * 2) + 's';
-                container.appendChild(particle);
-            }
-            
-            card.appendChild(container);
-        }
-
-        // INIT PARTICLES.JS
         function initParticles() {
             particlesJS('particles-js', {
-                particles: {
-                    number: { value: 80, density: { enable: true, value_area: 800 } },
-                    color: { value: '#8b5cf6' },
-                    shape: { type: 'circle' },
-                    opacity: { value: 0.3, random: true },
-                    size: { value: 3, random: true },
-                    line_linked: { enable: false },
-                    move: { enable: true, speed: 1, direction: 'none', random: true, out_mode: 'out' }
-                },
-                interactivity: {
-                    detect_on: 'canvas',
-                    events: { onhover: { enable: true, mode: 'repulse' } }
-                }
+                particles: { number: { value: 60, density: { enable: true, value_area: 800 } }, color: { value: '#8b5cf6' }, shape: { type: 'circle' }, opacity: { value: 0.2, random: true }, size: { value: 2 }, line_linked: { enable: true, distance: 150, color: '#8b5cf6', opacity: 0.1, width: 1 }, move: { enable: true, speed: 1 } }
             });
         }
 
-        // INIT CONSTELLATIONS
         function initConstellations() {
             const canvas = document.getElementById('constellations');
             const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             const stars = [];
-            const numStars = 100;
-
-            for (let i = 0; i < numStars; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 2
-                });
+            for (let i = 0; i < 100; i++) stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.5, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3 });
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = 'rgba(139, 92, 246, 0.4)'; stars.forEach(s => { s.x += s.vx; s.y += s.vy; if (s.x < 0 || s.x > canvas.width) s.vx *= -1; if (s.y < 0 || s.y > canvas.height) s.vy *= -1; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill(); }); requestAnimationFrame(animate);
             }
-
-            function drawConstellations() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Draw stars
-                stars.forEach(star => {
-                    ctx.beginPath();
-                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(139, 92, 246, 0.4)';
-                    ctx.fill();
-                });
-
-                // Draw connections
-                stars.forEach((star, i) => {
-                    stars.slice(i + 1).forEach(otherStar => {
-                        const distance = Math.hypot(star.x - otherStar.x, star.y - otherStar.y);
-                        if (distance < 150) {
-                            ctx.beginPath();
-                            ctx.moveTo(star.x, star.y);
-                            ctx.lineTo(otherStar.x, otherStar.y);
-                            ctx.strokeStyle = `rgba(139, 92, 246, ${0.1 * (1 - distance / 150)})`;
-                            ctx.lineWidth = 1;
-                            ctx.stroke();
-                        }
-                    });
-                });
-
-                requestAnimationFrame(drawConstellations);
-            }
-
-            drawConstellations();
-
-            window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            });
+            animate();
         }
 
-        // INIT
-        function init() {
-            // Simulate loading
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('hide');
-                setTimeout(() => {
-                    document.getElementById('home-view').style.display = 'block';
-                    // Trigger reveal animation
-                    setTimeout(() => {
-                        document.querySelectorAll('.card').forEach(card => {
-                            card.classList.add('reveal');
-                        });
-                    }, 100);
-                }, 800);
-            }, 2000);
-
-            // Initialize effects
-            initParticles();
-            initConstellations();
-
-            const grid = document.getElementById('grid');
-            grid.innerHTML = '';
-            
-            for (const [key, val] of Object.entries(data)) {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.dataset.genre = key;
-                
-                const bubble = document.createElement('div');
-                bubble.className = 'bubble';
-                bubble.textContent = val.phrases[0];
-                
-                card.innerHTML = `
-                    <img src="${val.img}" class="char-img" onclick="toggleBubble(this)">
-                    <div class="genre-name" onclick="start('${key}')">${val.name}</div>
-                `;
-                
-                card.insertBefore(bubble, card.firstChild);
-                createMagicParticles(card);
-                grid.appendChild(card);
-            }
-
-            // Initialize AdSense
-            try {
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            } catch (e) {
-                console.log('AdSense not loaded yet');
-            }
-        }
-
-        function toggleBubble(img) {
-            const card = img.parentElement;
-            const genreKey = card.dataset.genre;
-            const phrases = data[genreKey].phrases;
-            const bubble = card.querySelector('.bubble');
-            
+        function toggleBubble(card) {
             const isActive = card.classList.contains('active');
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-            
-            if (!isActive) {
-                card.classList.add('active');
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-                typeWriter(bubble, phrases[phraseIndex], 30);
-                
-                gtag('event', 'bubble_view', {
-                    'genre': data[genreKey].name
-                });
-            }
+            if (!isActive) card.classList.add('active');
         }
 
-        function start(key) {
-            currentGenre = key;
-            currentQ = 0;
-            
-            gtag('event', 'quiz_start', {
-                'genre': key
-            });
-            
+        function startQuiz(e, key) {
+            e.stopPropagation(); currentGenre = key; currentQ = 0;
             document.getElementById('home-view').style.display = 'none';
             document.getElementById('quiz-view').style.display = 'flex';
             renderQ();
@@ -1369,117 +274,51 @@
             document.getElementById('prog-label').innerText = `PREGUNTA ${currentQ + 1} / 10`;
             document.getElementById('progress').style.width = `${((currentQ + 1) / 10) * 100}%`;
             document.getElementById('q-text').innerText = q.q;
-            document.getElementById('options').innerHTML = `
-                <button class="ans-btn" onclick="next()"><span>${q.a}</span></button>
-                <button class="ans-btn" onclick="next()"><span>${q.b}</span></button>
-            `;
+            document.getElementById('options').innerHTML = `<button class="ans-btn" onclick="next()"><span>${q.a}</span></button><button class="ans-btn" onclick="next()"><span>${q.b}</span></button>`;
         }
 
         function next() {
-            gtag('event', 'question_answered', {
-                'genre': currentGenre,
-                'question': currentQ + 1
-            });
-
-            currentQ++;
-            if (currentQ < 10) {
-                renderQ();
-            } else {
-                showScanner();
-            }
+            currentQ++; if (currentQ < 10) renderQ(); else showScanner();
         }
 
         function showScanner() {
             document.getElementById('quiz-view').style.display = 'none';
             document.getElementById('scanner-view').style.display = 'flex';
-            
-            gtag('event', 'quiz_complete', {
-                'genre': currentGenre
-            });
-            
-            setTimeout(showResult, 3000);
+            setTimeout(showResult, 2500);
         }
 
         async function showResult() {
             document.getElementById('scanner-view').style.display = 'none';
             document.getElementById('res-view').style.display = 'block';
-            
             try {
                 const res = await fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:${currentGenre}&maxResults=5&langRestrict=es&orderBy=relevance`);
                 const books = await res.json();
-                
-                if(books.items && books.items.length > 0) {
+                if(books.items) {
                     const main = books.items[0].volumeInfo;
-                    const isbn = main.industryIdentifiers?.find(id => id.type === 'ISBN_13' || id.type === 'ISBN_10')?.identifier;
-                    
-                    // Goodreads link con ISBN si existe, sino busqueda
-                    const grLink = isbn 
-                        ? `https://www.goodreads.com/book/isbn/${isbn}`
-                        : `https://www.goodreads.com/search?q=${encodeURIComponent(main.title + ' ' + (main.authors ? main.authors[0] : ''))}`;
-                    
-                    // Amazon link con título
-                    const amazonLink = `https://www.amazon.es/s?k=${encodeURIComponent(main.title + ' ' + (main.authors ? main.authors[0] : ''))}&tag=storyskin-21`;
-                    
+                    const grLink = `https://www.goodreads.com/search?q=${encodeURIComponent(main.title + ' ' + (main.authors ? main.authors[0] : ''))}`;
                     document.getElementById('res-data').innerHTML = `
-                        <div style="flex:1; text-align:center">
-                            <img src="${data[currentGenre].img}" style="width:300px; filter: drop-shadow(0 0 40px var(--accent-glow)); animation: float 4s ease-in-out infinite;">
-                        </div>
+                        <div style="flex:1; text-align:center"><img src="${data[currentGenre].img}" style="width:280px; filter: drop-shadow(0 0 30px var(--accent-glow))"></div>
                         <div style="flex:1.5">
-                            <h2 style="font-size:3.5rem; font-weight:900; margin-bottom:1rem; text-transform: uppercase; line-height: 1; background: linear-gradient(135deg, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${main.title}</h2>
-                            <p style="color:var(--accent); font-weight:700; font-size:1.1rem; margin-bottom:2rem;">${main.authors?.join(', ') || 'Autor desconocido'}</p>
-                            <img src="${main.imageLinks?.thumbnail || 'https://via.placeholder.com/240x360?text=No+Cover'}" class="book-img" style="margin:2rem 0;">
-                            <p style="line-height:1.8; color:var(--text-secondary); font-size:1.05rem; margin-top:2rem;">${main.description ? main.description.substring(0,400) + '...' : 'Una aventura literaria te espera.'}</p>
-                            <div style="margin-top: 2rem;">
-                                <a href="${grLink}" target="_blank" class="goodreads-btn"><span>VER EN GOODREADS</span></a>
-                                <a href="${amazonLink}" target="_blank" rel="noopener nofollow" class="amazon-btn"><span>COMPRAR EN AMAZON</span></a>
-                            </div>
-                        </div>
-                    `;
-                    
+                            <h2 style="font-size:2.5rem; font-weight:900; text-transform: uppercase;">${main.title}</h2>
+                            <p style="color:var(--accent); font-weight:700; margin:1rem 0;">${main.authors?.join(', ')}</p>
+                            <img src="${main.imageLinks?.thumbnail || ''}" class="book-img">
+                            <p style="line-height:1.7; color:#888; margin-top:2rem;">${main.description ? main.description.substring(0,350) + '...' : 'Iniciando aventura literaria.'}</p>
+                            <a href="${grLink}" target="_blank" class="goodreads-btn">VER EN GOODREADS</a>
+                        </div>`;
                     const grid = document.getElementById('res-grid');
                     grid.innerHTML = '';
                     books.items.slice(1).forEach(b => {
                         const info = b.volumeInfo;
-                        const subIsbn = info.industryIdentifiers?.find(id => id.type === 'ISBN_13' || id.type === 'ISBN_10')?.identifier;
-                        const subGrLink = subIsbn 
-                            ? `https://www.goodreads.com/book/isbn/${subIsbn}`
-                            : `https://www.goodreads.com/search?q=${encodeURIComponent(info.title + ' ' + (info.authors ? info.authors[0] : ''))}`;
-                        
-                        grid.innerHTML += `
-                            <div style="background:var(--glass); padding:2.5rem; border-radius:28px; text-align:center; border: 1px solid var(--border); transition: all 0.4s ease; cursor: pointer;" onmouseover="this.style.borderColor='var(--accent)'; this.style.transform='translateY(-8px)'" onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
-                                <img src="${info.imageLinks?.thumbnail || 'https://via.placeholder.com/110x165?text=No+Cover'}" style="width:130px; border-radius:8px; margin-bottom:1.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
-                                <h4 style="font-size:0.85rem; margin-bottom:1.2rem; font-weight:700; text-transform:uppercase; color: var(--text-primary);">${info.title}</h4>
-                                <a href="${subGrLink}" target="_blank" style="color:var(--accent); text-decoration:none; font-weight:700; font-size:0.75rem; letter-spacing: 0.1em;">GOODREADS →</a>
-                            </div>
-                        `;
-                    });
-
-                    gtag('event', 'result_view', {
-                        'genre': currentGenre,
-                        'book_title': main.title
+                        const subGrLink = `https://www.goodreads.com/search?q=${encodeURIComponent(info.title)}`;
+                        grid.innerHTML += `<div style="background:var(--glass); padding:2rem; border-radius:24px; text-align:center; border: 1px solid var(--border)">
+                            <img src="${info.imageLinks?.thumbnail || ''}" style="width:100px; border-radius:6px; margin-bottom:1rem">
+                            <h4 style="font-size:0.8rem; margin-bottom:1rem; font-weight:700; text-transform:uppercase;">${info.title}</h4>
+                            <a href="${subGrLink}" target="_blank" style="color:var(--accent); text-decoration:none; font-weight:700; font-size:0.7rem;">GOODREADS</a>
+                        </div>`;
                     });
                 }
-            } catch (e) {
-                console.error('Error:', e);
-                document.getElementById('res-data').innerHTML = "<p style='color: var(--text-secondary);'>Error de conexión. Por favor, reintenta.</p>";
-            }
+            } catch (e) { document.getElementById('res-data').innerHTML = "<p>Error de conexión. Reintenta.</p>"; }
         }
-
-        function backHome() {
-            location.reload();
-        }
-
-        // Float animation for character
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes float {
-                0%, 100% { transform: translateY(0px); }
-                50% { transform: translateY(-20px); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // INIT
         init();
     </script>
 </body>
